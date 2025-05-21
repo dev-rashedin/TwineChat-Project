@@ -1,0 +1,1 @@
+## This is a chat app built with React.js and Firebase

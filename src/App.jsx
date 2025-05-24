@@ -1,7 +1,13 @@
+import Chat from "./components/Chat";
+import Detail from "./components/Detail";
+import List from "./components/List";
+
 const App = () => {
   return (
     <div className='container'>
-      <h1> Twine Chat App</h1>
+      <List />
+      <Chat />
+      <Detail/>
     </div>
   );
 }

@@ -1,40 +1,74 @@
 .chatList {
-.search{
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 20px;
+  flex: 1;
+  overflow: scroll;
 
-  .searchBar {
-    flex: 1;
-    background-color: rgba(17, 25, 40, 0.5);
+  .search {
     display: flex;
     align-items: center;
-    border-radius: 10px;
+    gap: 20px;
+    padding: 20px;
 
-
-    input {
-      background-color: transparent;
-      border: none;
-      outline: none;
-      color: white;
-      padding: 10px;
+    .searchBar {
       flex: 1;
+      background-color: var(--background-color);
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      padding-left: 10px;
+
+      input {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 10px;
+        flex: 1;
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
     }
 
-    img{
-      width: 20px;
-      height: 20px;
+    .add {
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      background-color: var(--background-color);
+      padding: 10px;
+      border-radius: 10px;
     }
   }
 
-  .add{
-    width: 36px;
-    height: 36px;
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
     cursor: pointer;
-    background-color: rgba(17, 25, 40, 0.5);
-    padding: 10px;
-    border-radius: 10px;
+    border-bottom: 1px solid var(--border-color);
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .texts {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      span {
+        font-weight: 500;
+      }
+
+      p {
+        font-size: 13px;
+        font-weight: 300;
+      }
+    }
   }
-}
 }

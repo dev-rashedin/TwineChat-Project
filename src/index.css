@@ -1,3 +1,8 @@
+:root{
+  --background-color: rgba(17, 25, 40, 0.5);
+  --border-color: #dddddd35;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,6 +10,8 @@
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
+
+
 
 body{
   background-image: url('/bg.jpg');

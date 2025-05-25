@@ -38,7 +38,43 @@ const Chat = () => {
         </div>
       </div>
       {/* center portion */}
-      <div className='center'></div>
+      <div className='center'>
+        <div className="message own">
+          <div className="texts">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum esse dolorum neque voluptatibus iste at excepturi praesentium optio, officiis eum nesciunt deserunt repellat sunt dignissimos quaerat commodi animi similique provident!
+            </p>
+            <span>1 min ago</span>
+          </div>
+        </div>
+        {/* 2nd message box */}
+        <div className="message">
+          <img src="./avatar.png" alt="User" />
+          <div className="texts">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum esse dolorum neque voluptatibus iste at excepturi praesentium optio, officiis eum nesciunt deserunt repellat sunt dignissimos quaerat commodi animi similique provident!
+            </p>
+            <span>1 min ago</span>
+          </div> 
+        </div>
+        {/* 3rd message box */}
+        <div className="message own">       
+          <div className="texts">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum esse dolorum neque voluptatibus iste at excepturi praesentium optio, officiis eum nesciunt deserunt repellat sunt dignissimos quaerat commodi animi similique provident!
+            </p>
+            <span>1 min ago</span>
+          </div>
+        </div>
+
+        {/* 4th message box */}
+        <div className="message">
+          <img src="./avatar.png" alt="User" />
+          <div className="texts">
+            <img src="./bg.jpg" alt="" />
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum esse dolorum neque voluptatibus iste at excepturi praesentium optio, officiis eum nesciunt deserunt repellat sunt dignissimos quaerat commodi animi similique provident!
+            </p>
+            <span>1 min ago</span>
+          </div>
+        </div>
+      </div>
 
       {/* bottom portion */}
       <div className='bottom'>
@@ -50,15 +86,22 @@ const Chat = () => {
 
         <input
           type='text'
-          name='' id=''
+          name=''
+          id=''
           placeholder='Type a message...'
           onChange={(e) => setText(e.target.value)}
           value={text}
         />
 
         <div className='emoji'>
-          <img src='./emoji.png' alt='emoji' onClick={() => setOpen((prev) => !prev)} />
-          <EmojiPicker open={open} onEmojiClick={handleEmoji} />
+          <img
+            src='./emoji.png'
+            alt='emoji'
+            onClick={() => setOpen((prev) => !prev)}
+          />
+          <div className='emoji-picker'>
+            <EmojiPicker open={open} onEmojiClick={handleEmoji} />
+          </div>
         </div>
         <button className='send-button'>Send</button>
       </div>

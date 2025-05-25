@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import '../styles/chatList.css'
+import '../../styles/chatList.css'
+import AddUser from './AddUser';
 
 
 const usersArray = [
@@ -42,6 +43,7 @@ const ChatList = () => {
           </div>
         </div>
       ))}
+     {addMode && <AddUser />}
     </main>
   );
 }

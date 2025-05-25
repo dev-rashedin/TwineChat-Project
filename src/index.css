@@ -1,6 +1,7 @@
 :root{
   --background-color: rgba(17, 25, 40, 0.5);
   --border-color: #dddddd35;
+  --text-secondary: #a5a5a5
 }
 
 * {

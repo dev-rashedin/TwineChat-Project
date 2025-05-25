@@ -1,6 +1,18 @@
 import { useState } from 'react';
 import '../styles/chatList.css'
 
+
+const usersArray = [
+  { name: "Rashedin Islam" },
+  {name: 'Laila Arjuman'},
+  { name: "Mehi Eddin" },
+  { name: "Ashfand Shabbir" },
+  { name: 'Rocky Haque' },
+  { name: 'Jannatul Ferdous' },
+  { name: 'Afsarul Ahmed' },
+  {name: 'Nayeem Ahmed'},
+]
+
 const ChatList = () => {
 
   const [addMode, setAddMode] = useState(false);
@@ -21,29 +33,15 @@ const ChatList = () => {
         />
       </div>
       {/*  */}
-      {Array.from({ length: 6 }).map((idx) => (
+      {usersArray.map((user, idx) => (
         <div className='item' key={idx}>
           <img src='./avatar.png' alt='user' />
           <div className='texts'>
-            <span>Jane Doe</span>
-            <p>Hello Jane!</p>
+            <span>{user.name}</span>
+            <p>{ `Hello ${user.name}`}</p>
           </div>
         </div>
       ))}
-      <div className='item'>
-        <img src='./avatar.png' alt='user' />
-        <div className='texts'>
-          <span>Jane Doe</span>
-          <p>Hello Jane!</p>
-        </div>
-      </div>
-      <div className='item'>
-        <img src='./avatar.png' alt='user' />
-        <div className='texts'>
-          <span>Jane Doe</span>
-          <p>Hello Jane!</p>
-        </div>
-      </div>
     </div>
   );
 }

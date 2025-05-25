@@ -21,23 +21,25 @@ const ChatList = () => {
         />
       </div>
       {/*  */}
-      <div className="item">
-        <img src="./avatar.png" alt="user" />
-        <div className="texts">
+      {Array.from({ length: 6 }).map((idx) => (
+        <div className='item' key={idx}>
+          <img src='./avatar.png' alt='user' />
+          <div className='texts'>
+            <span>Jane Doe</span>
+            <p>Hello Jane!</p>
+          </div>
+        </div>
+      ))}
+      <div className='item'>
+        <img src='./avatar.png' alt='user' />
+        <div className='texts'>
           <span>Jane Doe</span>
           <p>Hello Jane!</p>
         </div>
       </div>
-      <div className="item">
-        <img src="./avatar.png" alt="user" />
-        <div className="texts">
-          <span>Jane Doe</span>
-          <p>Hello Jane!</p>
-        </div>
-      </div>
-      <div className="item">
-        <img src="./avatar.png" alt="user" />
-        <div className="texts">
+      <div className='item'>
+        <img src='./avatar.png' alt='user' />
+        <div className='texts'>
           <span>Jane Doe</span>
           <p>Hello Jane!</p>
         </div>

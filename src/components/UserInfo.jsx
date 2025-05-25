@@ -2,7 +2,7 @@ import '../styles/userInfo.css'
 
 const UserInfo = () => {
   return (
-    <div className='userInfo'>
+    <main className='userInfo'>
       <div className="user">
         <img src='./avatar.png' alt='user'/>
         <h2 className="name">John Doe</h2>
@@ -12,7 +12,7 @@ const UserInfo = () => {
         <img src='./video.png' alt='video'/>
         <img src='./edit.png' alt='edit'/>
       </div>
-    </div>
+    </main>
   )
 }
 export default UserInfo

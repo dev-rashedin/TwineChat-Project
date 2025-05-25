@@ -1,10 +1,10 @@
-:root{
+:root {
   --background-color: rgba(17, 25, 40, 0.7);
   --secondary-background: #432c85;
-  --secondary-bg-disabled: #3c096c;
+  --secondary-bg-dark: #3c096c;
   --border-color: #dddddd35;
   --text-secondary: #a5a5a5;
-  --danger-color: #8B008B;
+  --danger-color: #8b008b;
   --danger-color-secondary: #800080;
 }
 
@@ -12,23 +12,22 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-
-
-body{
+body {
   background-image: url('/bg.jpg');
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  color: white
+  color: white;
 }
 
-.container{
-  width: 90vw;
+.container {
+  width: 95vw;
+  max-width: 1500px;
   height: 90vh;
   background-color: rgba(17, 25, 40, 0.75);
   backdrop-filter: blur(19px) saturate(180%);
@@ -36,4 +35,3 @@ body{
   border: 1px solid rgba(255, 255, 255, 0.125);
   display: flex;
 }
-

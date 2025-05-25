@@ -2,14 +2,14 @@ import '../styles/detail.css'
 
 const Detail = () => {
   return (
-    <div className='detail'>
+    <main className='detail'>
       <div className='user'>
         <img src='./avatar.png' alt='User' />
         <h2>Jane Doe</h2>
         <p>Lorem ipsum dolor sit amet.</p>
       </div>
 
-      <div className='info'>
+      <section className='info'>
         {/* 1st option */}
         <div className='option'>
           <div className='title'>
@@ -90,8 +90,9 @@ const Detail = () => {
 
         {/* block button */}
         <button>Block User</button>
-      </div>
-    </div>
+        <button className='logout'>Logout</button>
+      </section>
+    </main>
   );
 }
 export default Detail

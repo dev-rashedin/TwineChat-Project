@@ -18,7 +18,7 @@ const ChatList = () => {
   const [addMode, setAddMode] = useState(false);
 
   return (
-    <div className='chatList'>
+    <main className='chatList'>
       {/* search */}
       <div className='search'>
         <div className='searchBar'>
@@ -42,7 +42,7 @@ const ChatList = () => {
           </div>
         </div>
       ))}
-    </div>
+    </main>
   );
 }
 export default ChatList

@@ -25,9 +25,9 @@ const Chat = () => {
   
 
   return (
-    <div className='chat'>
+    <main className='chat'>
       {/* top portion */}
-      <div className='top'>
+      <section className='top'>
         {/* user */}
         <div className='user'>
           <img src='./avatar.png' alt='user' />
@@ -42,9 +42,9 @@ const Chat = () => {
           <img src='./video.png' alt='video' />
           <img src='./info.png' alt='more' />
         </div>
-      </div>
+      </section>
       {/* center portion */}
-      <div className='center'>
+      <section className='center'>
         <div className='message own'>
           <div className='texts'>
             <p>
@@ -97,10 +97,10 @@ const Chat = () => {
           </div>
         </div>
         <div ref={endRef}></div>
-      </div>
+      </section>
 
       {/* bottom portion */}
-      <div className='bottom'>
+      <section className='bottom'>
         <div className='icons'>
           <img src='./img.png' alt='Image' />
           <img src='./camera.png' alt='Camera' />
@@ -127,8 +127,8 @@ const Chat = () => {
           </div>
         </div>
         <button className='send-button'>Send</button>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 export default Chat;

@@ -4,10 +4,10 @@ import UserInfo from './UserInfo'
 
 const List = () => {
   return (
-    <div className='list'>
+    <main className='list'>
       <UserInfo />
       <ChatList/>
-    </div>
+    </main>
   )
 }
 export default List

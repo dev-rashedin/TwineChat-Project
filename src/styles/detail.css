@@ -2,11 +2,11 @@
   flex: 1;
 
   .user {
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     border-bottom: 1px solid var(--border-color);
 
     img {
@@ -17,7 +17,7 @@
     }
   }
 
-  .info { 
+  .info {
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -88,15 +88,20 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      
 
       &:hover {
-        background-color: var(--danger-color-secondary)	;
+        background-color: var(--danger-color-secondary);
       }
 
-      &.logout{
+      &.logout {
         padding: 10px;
-        background-color: var(--secondary-background-color);
+        background-color: var(--secondary-bg-dark);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: -5px;
       }
     }
   }

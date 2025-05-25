@@ -1,9 +1,11 @@
 :root{
-  --background-color: rgba(17, 25, 40, 0.5);
-  --secondary-background: #5183fe;
-  --secondary-bg-disabled: #5182feb4;
+  --background-color: rgba(17, 25, 40, 0.7);
+  --secondary-background: #432c85;
+  --secondary-bg-disabled: #3c096c;
   --border-color: #dddddd35;
-  --text-secondary: #a5a5a5
+  --text-secondary: #a5a5a5;
+  --danger-color: #8B008B;
+  --danger-color-secondary: #800080;
 }
 
 * {

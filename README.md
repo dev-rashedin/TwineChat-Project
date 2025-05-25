@@ -7,5 +7,6 @@
 
 ### Package used
    - emoji-picker-react
+   - react-toastify
    
    

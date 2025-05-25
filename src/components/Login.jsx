@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import '../styles/login.css'
+import { toast } from 'react-toastify'
 
 const Login = () => {
   const [loading, setLoading] = useState(false)
@@ -21,6 +22,7 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault()
+    toast.success('Login Successful')
   }
 
   const handleRegister = (e) => {

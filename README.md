@@ -2,4 +2,10 @@
 
 ### Technologies
    - React
+
+
+
+### Package used
+   - emoji-picker-react
+   
    

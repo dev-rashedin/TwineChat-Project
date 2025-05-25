@@ -59,10 +59,12 @@
   .center{
    padding: 20px;
    flex: 1;
-   overflow: scroll;
+   overflow-y: scroll;
    display: flex;
    flex-direction: column;
    gap: 20px;
+
+  
 
    .message{
     max-width: 70%;

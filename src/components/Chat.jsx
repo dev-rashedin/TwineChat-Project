@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import '../styles/chat.css';
 import EmojiPicker from 'emoji-picker-react';
 
@@ -7,6 +7,12 @@ const Chat = () => {
 
   const [open, setOpen] = useState(false);
   const [text, setText] = useState('');
+
+  const endRef = useRef(null)
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({behavior: "smooth"})
+  },[])
 
   const handleEmoji = (e) => { 
 
@@ -39,41 +45,58 @@ const Chat = () => {
       </div>
       {/* center portion */}
       <div className='center'>
-        <div className="message own">
-          <div className="texts">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum esse dolorum neque voluptatibus iste at excepturi praesentium optio, officiis eum nesciunt deserunt repellat sunt dignissimos quaerat commodi animi similique provident!
+        <div className='message own'>
+          <div className='texts'>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
+              esse dolorum neque voluptatibus iste at excepturi praesentium
+              optio, officiis eum nesciunt deserunt repellat sunt dignissimos
+              quaerat commodi animi similique provident!
             </p>
             <span>1 min ago</span>
           </div>
         </div>
         {/* 2nd message box */}
-        <div className="message">
-          <img src="./avatar.png" alt="User" />
-          <div className="texts">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum esse dolorum neque voluptatibus iste at excepturi praesentium optio, officiis eum nesciunt deserunt repellat sunt dignissimos quaerat commodi animi similique provident!
+        <div className='message'>
+          <img src='./avatar.png' alt='User' />
+          <div className='texts'>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
+              esse dolorum neque voluptatibus iste at excepturi praesentium
+              optio, officiis eum nesciunt deserunt repellat sunt dignissimos
+              quaerat commodi animi similique provident!
             </p>
             <span>1 min ago</span>
-          </div> 
+          </div>
         </div>
         {/* 3rd message box */}
-        <div className="message own">       
-          <div className="texts">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum esse dolorum neque voluptatibus iste at excepturi praesentium optio, officiis eum nesciunt deserunt repellat sunt dignissimos quaerat commodi animi similique provident!
+        <div className='message own'>
+          <div className='texts'>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
+              esse dolorum neque voluptatibus iste at excepturi praesentium
+              optio, officiis eum nesciunt deserunt repellat sunt dignissimos
+              quaerat commodi animi similique provident!
             </p>
             <span>1 min ago</span>
           </div>
         </div>
 
         {/* 4th message box */}
-        <div className="message">
-          <img src="./avatar.png" alt="User" />
-          <div className="texts">
-            <img src="./bg.jpg" alt="" />
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum esse dolorum neque voluptatibus iste at excepturi praesentium optio, officiis eum nesciunt deserunt repellat sunt dignissimos quaerat commodi animi similique provident!
+        <div className='message'>
+          <img src='./avatar.png' alt='User' />
+          <div className='texts'>
+            <img src='./bg.jpg' alt='' />
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
+              esse dolorum neque voluptatibus iste at excepturi praesentium
+              optio, officiis eum nesciunt deserunt repellat sunt dignissimos
+              quaerat commodi animi similique provident!
             </p>
             <span>1 min ago</span>
           </div>
         </div>
+        <div ref={endRef}></div>
       </div>
 
       {/* bottom portion */}

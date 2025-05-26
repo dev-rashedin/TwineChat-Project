@@ -30,7 +30,16 @@
         color: white;
         border-radius: 5px;
         width: 400px;
+  
       }
+
+      input:-webkit-autofill {
+        box-shadow: 0 0 0 1000px var(--background-color) inset;
+        -webkit-text-fill-color: white;
+        transition: background-color 9999s ease-in-out 0s;
+      }
+
+
 
       label {
         width: 100%;
@@ -65,6 +74,14 @@
           color: gray;
         }
       }     
+    }
+
+    p{
+      background-color: var(--border-color);
+      padding: 10px 20px;
+      border-radius: 5px;
+      width: 400px;
+      text-align: center;
     }
 
    .link{

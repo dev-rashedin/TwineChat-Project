@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import '../styles/login.css';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { auth, db } from './lib/firebase';
 import { toast } from 'react-toastify';
 import avatarPlaceholder from '../../public/avatar.png';
 import fileUpload from './lib/fileUpload';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 const Register = () => {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState({
     file: null,
@@ -48,19 +49,21 @@ const Register = () => {
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
-      const usersRef = await addDoc(collection(db, 'users'), {
+      await setDoc(doc(db, 'users', res.user.uid), {
         username,
         email,
         avatar: avatar.url || '',
-        blockedList: [],
+        id: res.user.uid,
+        blocked: [],
       });
 
-      const chatRef = await addDoc(collection(db, 'userChats'), {
+      await setDoc(doc(db, 'userChats', res.user.uid), {
         chats: [],
       });
 
       toast.success('Account created! You can now login now.');
       e.target.reset();
+      navigate('/login');
     } catch (error) {
       console.error(error);
       toast.error(error.message);
@@ -85,9 +88,27 @@ const Register = () => {
               style={{ display: 'none' }}
               onChange={handleAvatar}
             />
-            <input type='text' placeholder='Username' name='username' />
-            <input type='text' placeholder='Email' name='email' />
-            <input type='password' placeholder='Password' name='password' />
+            <input
+              type='text'
+              placeholder='Username'
+              name='username'
+              autoComplete='off'
+              required
+            />
+            <input
+              type='text'
+              placeholder='Email'
+              name='email'
+              autoComplete='email'
+              required
+            />
+            <input
+              type='password'
+              placeholder='Password'
+              name='password'
+              autoComplete='new-password'
+              required
+            />
             <button disabled={loading}>
               {loading ? 'Loading...' : 'Sign Up'}
             </button>

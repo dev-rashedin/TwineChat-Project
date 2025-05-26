@@ -1,80 +1,43 @@
 import { useState } from 'react';
 import '../styles/login.css';
 import { toast } from 'react-toastify';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from './lib/firebase';
-import { addDoc, collection } from 'firebase/firestore';
-import avatarPlaceholder from '../../public/avatar.png';
-import fileUpload from './lib/fileUpload';
 import { Link } from 'react-router';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './lib/firebase';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const [avatar, setAvatar] = useState({
-    file: null,
-    url: '',
-  });
+  // const navigate = useNavigate();
 
-
-  const handleAvatar = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // const previewUrl = URL.createObjectURL(file);
-
-    // Upload the file immediately
-    const uploadedUrl = await fileUpload(file);
-
-    if (uploadedUrl) {
-      setAvatar({
-        file,
-        url: uploadedUrl,
-      });
-    } else {
-      // setAvatar({
-      //   file,
-      //   url: previewUrl,
-      // });
-      console.error('Upload failed');
-    }
-  };
   
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    toast.success('Login Successful');
-  };
-
-  const handleRegister = async (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData(e.target);
-    const { username, email, password } = Object.fromEntries(formData);
+    const { email, password } = Object.fromEntries(formData);
 
     try {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
-
-      const usersRef = await addDoc(collection(db, 'users'), {
-        username,
-        email,
-        avatar: avatar.url || '',
-        blockedList: [],
-      });
-
-      const chatRef = await addDoc(collection(db, 'userChats'), {
-        chats: []
-      });
-
-      toast.success("Account created! You can now login now.");
-      e.target.reset();
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      
+      console.log(res)
+      
+      if (res.user) { 
+        toast.success('Login Successful');
+        window.location.href = '/';
+      }
+     
     } catch (error) {
-      console.error(error);
-      toast.error(error.message);
+      console.error('Login failed:', error);
+      toast.error(error.message || 'Login failed');
     } finally {
       setLoading(false);
     }
+
+    // toast.success('Login Successful');
   };
+
   
 
   return (
@@ -83,14 +46,26 @@ const Login = () => {
         <div className='item'>
           <h2>Welcome back,</h2>
           <form onSubmit={handleLogin}>
-            <input type='text' placeholder='Email' name='email' />
-            <input type='password' placeholder='Password' name='password' />
+            <input
+              type='text'
+              placeholder='Email'
+              name='email'
+              autoComplete='email'
+              required
+            />
+            <input
+              type='password'
+              placeholder='Password'
+              name='password'
+              autoComplete='current-password'
+              required
+            />
             <button disabled={loading}>
               {loading ? 'Loading...' : 'Sign In'}
             </button>
           </form>
           <p>
-            Don&apos;t have an account? {' '}
+            Don&apos;t have an account?{' '}
             <Link className='link' to='/register'>
               Register
             </Link>

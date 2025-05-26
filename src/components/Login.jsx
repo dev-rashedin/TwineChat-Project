@@ -1,36 +1,59 @@
-import { useState } from 'react'
-import '../styles/login.css'
-import { toast } from 'react-toastify'
+import { useState } from 'react';
+import '../styles/login.css';
+import { toast } from 'react-toastify';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from './lib/firebase';
+import { addDoc, collection } from 'firebase/firestore';
 
 const Login = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState({
     file: null,
-    url: ""
-  })
+    url: '',
+  });
 
   const handleAvatar = (e) => {
-   const file = e.target.files[0]
+    const file = e.target.files[0];
     if (file) {
       setAvatar({
         file: file,
         url: URL.createObjectURL(file),
       });
     }
-  }
-
+  };
 
   const handleLogin = (e) => {
-    e.preventDefault()
-    toast.success('Login Successful')
-  }
+    e.preventDefault();
+    toast.success('Login Successful');
+  };
 
-  const handleRegister = (e) => {
-    e.preventDefault()
-   
-    
-    
-  }
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const { username, email, password } = Object.fromEntries(formData);
+
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+
+      const docRef = await addDoc(collection(db, 'users'), {
+        username,
+        email,
+        blockedList: [],
+      });
+
+      const chatRef = await addDoc(collection(db, 'userChats'), {
+        chats: []
+      });
+
+
+
+     toast.success("Account created! You can now login now.");
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message);
+    }
+  };
 
   return (
     <main className='login'>
@@ -64,5 +87,5 @@ const Login = () => {
       </section>
     </main>
   );
-}
-export default Login
+};
+export default Login;

@@ -53,7 +53,8 @@ const Login = () => {
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
-      const docRef = await addDoc(collection(db, 'users'), {
+      const usersRef = await addDoc(collection(db, 'users'), {
+        userUrl: avatar.url || '',
         username,
         email,
         blockedList: [],
@@ -62,8 +63,6 @@ const Login = () => {
       const chatRef = await addDoc(collection(db, 'userChats'), {
         chats: []
       });
-
-
 
      toast.success("Account created! You can now login now.");
     } catch (error) {

@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from './lib/firebase';
 import { addDoc, collection } from 'firebase/firestore';
 import { useEffect } from 'react';
+import fileUpload from './lib/fileUpload';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -57,37 +58,8 @@ const Login = () => {
   };
 
   useEffect(() => {
-    const fileUpload = async () => {
-
-        if (!avatar.file) {
-          console.error('No avatar file selected');
-          return;
-        }
-      
-        const formData = new FormData();
-        formData.append('file', avatar.file); // 🔑 match the multer field name
-      
-        try {
-          const res = await fetch(import.meta.env.VITE_API_URL, {
-            method: 'POST',
-            body: formData,
-          });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          console.log('File uploaded:', data.url); // Use this Cloudinary URL as needed
-        } else {
-          console.error('Upload failed:', data.error);
-        }
-      } catch (err) {
-        console.error('Error uploading file:', err);
-      }
-    };
-
-    fileUpload()
-    
- },[avatar])
+    fileUpload(avatar?.file)  
+ },[avatar.file])
 
   return (
     <main className='login'>

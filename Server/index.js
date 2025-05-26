@@ -31,7 +31,10 @@ app.post('/api/v1/upload', upload.single('file'), async (req, res) => {
     const fileBuffer = req.file.buffer;
 
     const stream = cloudinary.uploader.upload_stream(
-      { resource_type: 'auto' },
+      {
+        resource_type: 'auto',
+        folder: 'twineChat_firebase',
+      },
       (error, result) => {
         if (error) {
           console.error('Cloudinary error:', error);

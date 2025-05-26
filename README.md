@@ -2,6 +2,7 @@
 
 ### Technologies
    - React
+   - Firebase
 
 
 

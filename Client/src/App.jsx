@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./components/lib/firebase";
 import { useUserStore } from "./components/lib/userStore";
+import Placeholder from "./components/ui/Placeholder";
 
 const App = () => {
 const navigate = useNavigate()
@@ -29,7 +30,7 @@ const navigate = useNavigate()
     }
   }, [fetchUserInfo])
   
-  if (isLoading) return <div className='loading'>Loading...</div>;
+  if (isLoading) return <Placeholder/>
 
   if(!currentUser) {
     navigate('/login')

@@ -6,6 +6,7 @@
   --text-secondary: #a5a5a5;
   --danger-color: #8b008b;
   --danger-color-secondary: #800080;
+  --disabled-color: #2c2929;
 }
 
 * {

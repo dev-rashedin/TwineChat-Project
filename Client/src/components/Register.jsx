@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import '../styles/login.css';
-import { toast } from 'react-toastify';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from './lib/firebase';
 import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from './lib/firebase';
+import { toast } from 'react-toastify';
 import avatarPlaceholder from '../../public/avatar.png';
 import fileUpload from './lib/fileUpload';
 import { Link } from 'react-router';
 
-const Login = () => {
+const Register = () => {
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState({
     file: null,
     url: '',
   });
-
 
   const handleAvatar = async (e) => {
     const file = e.target.files[0];
@@ -38,12 +37,6 @@ const Login = () => {
       console.error('Upload failed');
     }
   };
-  
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    toast.success('Login Successful');
-  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -63,10 +56,10 @@ const Login = () => {
       });
 
       const chatRef = await addDoc(collection(db, 'userChats'), {
-        chats: []
+        chats: [],
       });
 
-      toast.success("Account created! You can now login now.");
+      toast.success('Account created! You can now login now.');
       e.target.reset();
     } catch (error) {
       console.error(error);
@@ -75,30 +68,40 @@ const Login = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <main className='container'>
-      <section className='login'>
+      <div className='login'>
         <div className='item'>
-          <h2>Welcome back,</h2>
-          <form onSubmit={handleLogin}>
+          <h2>Create an Account</h2>
+          <form onSubmit={handleRegister}>
+            <label htmlFor='file'>
+              <img src={avatar.url || avatarPlaceholder} alt='User' />
+              Upload an image
+            </label>
+            <input
+              type='file'
+              id='file'
+              style={{ display: 'none' }}
+              onChange={handleAvatar}
+            />
+            <input type='text' placeholder='Username' name='username' />
             <input type='text' placeholder='Email' name='email' />
             <input type='password' placeholder='Password' name='password' />
             <button disabled={loading}>
-              {loading ? 'Loading...' : 'Sign In'}
+              {loading ? 'Loading...' : 'Sign Up'}
             </button>
           </form>
+
           <p>
-            Don&apos;t have an account? {' '}
-            <Link className='link' to='/register'>
-              Register
+            Already have an account?{' '}
+            <Link className='link' to='/login'>
+              Login
             </Link>
           </p>
         </div>
-        <section className='separator'></section>
-      </section>
+      </div>
     </main>
   );
 };
-export default Login;
+export default Register;

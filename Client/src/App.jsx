@@ -29,7 +29,11 @@ const navigate = useNavigate()
     }
   }, [fetchUserInfo])
   
-  console.log('currentUser', currentUser)
+  if (isLoading) return <div className='loading'>Loading...</div>;
+
+  if(!currentUser) {
+    navigate('/login')
+  }
   
 
   return (

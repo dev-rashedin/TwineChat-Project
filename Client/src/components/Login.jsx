@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './lib/firebase';
+import LoadingDots from './ui/LoadingDots';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -61,7 +62,7 @@ const Login = () => {
               required
             />
             <button disabled={loading}>
-              {loading ? 'Loading...' : 'Sign In'}
+              {loading ? <LoadingDots/> : 'Sign In'}
             </button>
           </form>
           <p>

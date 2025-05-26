@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import avatarPlaceholder from '../../public/avatar.png';
 import fileUpload from './lib/fileUpload';
 import { Link, useNavigate } from 'react-router';
+import LoadingDots from './ui/LoadingDots';
 
 const Register = () => {
   const navigate = useNavigate()
@@ -110,7 +111,7 @@ const Register = () => {
               required
             />
             <button disabled={loading}>
-              {loading ? 'Loading...' : 'Sign Up'}
+              {loading ? (<LoadingDots/>) : 'Sign Up'}
             </button>
           </form>
 

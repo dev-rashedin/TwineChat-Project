@@ -14,15 +14,30 @@ const Login = () => {
     url: '',
   });
 
-  const handleAvatar = (e) => {
+
+  const handleAvatar = async (e) => {
     const file = e.target.files[0];
-    if (file) {
+    if (!file) return;
+
+    const previewUrl = URL.createObjectURL(file);
+
+    // Upload the file immediately
+    const uploadedUrl = await fileUpload(file);
+
+    if (uploadedUrl) {
       setAvatar({
-        file: file,
-        url: URL.createObjectURL(file),
+        file,
+        url: uploadedUrl,
       });
+    } else {
+      setAvatar({
+        file,
+        url: previewUrl,
+      });
+      console.error('Upload failed');
     }
   };
+  
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -56,10 +71,7 @@ const Login = () => {
       toast.error(error.message);
     }
   };
-
-  useEffect(() => {
-    fileUpload(avatar?.file)  
- },[avatar.file])
+  
 
   return (
     <main className='login'>

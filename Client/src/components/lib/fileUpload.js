@@ -14,11 +14,11 @@ const fileUpload = async (file) => {
     });
 
     const data = await res.json();
-
     if (res.ok) {
-      console.log('File uploaded:', data.url); // Use this Cloudinary URL as needed
+      return data.url;
     } else {
       console.error('Upload failed:', data.error);
+      return Promise.reject(data);
     }
   } catch (err) {
     console.error('Error uploading file:', err);

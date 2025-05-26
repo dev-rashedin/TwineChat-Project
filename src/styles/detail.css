@@ -10,8 +10,8 @@
     border-bottom: 1px solid var(--border-color);
 
     img {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       object-fit: cover;
     }
@@ -101,7 +101,7 @@
         border-radius: 5px;
         cursor: pointer;
         font-size: 14px;
-        margin-top: -5px;
+        margin-top: -10px;
       }
     }
   }

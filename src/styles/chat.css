@@ -185,7 +185,7 @@
       cursor: pointer;
 
       &:disabled {
-        background-color: var(--secondary-bg-dark);
+        background-color: var(--border-color);
         cursor: not-allowed;
       }
     }

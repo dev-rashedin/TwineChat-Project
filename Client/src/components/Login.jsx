@@ -55,6 +55,32 @@ const Login = () => {
     }
   };
 
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('http://localhost:5000/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        console.log('File uploaded:', data.url); // Use this Cloudinary URL as needed
+      } else {
+        console.error('Upload failed:', data.error);
+      }
+    } catch (err) {
+      console.error('Error uploading file:', err);
+    }
+  };
+  
+
   return (
     <main className='login'>
       <section className='item'>

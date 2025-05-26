@@ -20,6 +20,8 @@ const upload = multer({ storage });
 
 // Upload Route
 app.post('/upload', upload.single('file'), async (req, res) => {
+  console.log('clicked')
+  
   try {
     const file = req.file;
     const result = await cloudinary.uploader
@@ -35,6 +37,12 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+app.get('/', (req, res) => { 
+  res.send(
+    '<h1 style="display: flex; justify-content: center; align-items: center; min-height: 90vh">Welcome to the File Upload API</h1>'
+  );
+})
 
 // Start Server
 const PORT = process.env.PORT || 5000;

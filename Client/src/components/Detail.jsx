@@ -1,5 +1,5 @@
-import '../styles/detail.css'
-import { auth } from './lib/firebase';
+import '../styles/detail.css';
+import { auth } from '../lib/firebase';
 
 const Detail = () => {
   return (
@@ -91,9 +91,11 @@ const Detail = () => {
 
         {/* block button */}
         <button>Block User</button>
-        <button className='logout' onClick={() => auth.signOut()}>Logout</button>
+        <button className='logout' onClick={() => auth.signOut()}>
+          Logout
+        </button>
       </section>
     </main>
   );
-}
-export default Detail
+};
+export default Detail;

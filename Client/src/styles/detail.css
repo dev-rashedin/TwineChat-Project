@@ -18,10 +18,9 @@
   }
 
   .info {
-    padding: 20px;
+    padding: 10px 20px;
     display: flex;
     flex-direction: column;
-    gap: 25px;
 
     .option {
       .title {
@@ -88,6 +87,7 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      margin-top: 5px;
 
       &:hover {
         background-color: var(--danger-color-secondary);
@@ -101,7 +101,7 @@
         border-radius: 5px;
         cursor: pointer;
         font-size: 14px;
-        margin-top: -10px;
+        margin-top: 15px;
       }
     }
   }

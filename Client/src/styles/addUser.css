@@ -20,6 +20,12 @@
       border-radius: 10px;
       border: none;
       outline: none;
+      background-color: rgb(3, 5, 23);
+      color: whitesmoke;
+    }
+
+    input::placeholder{
+      color: var(--text-secondary);
     }
 
     button{

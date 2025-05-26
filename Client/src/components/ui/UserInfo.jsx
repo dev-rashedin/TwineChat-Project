@@ -1,10 +1,10 @@
-import '../../styles/userInfo.css'
-import { useUserStore } from '../lib/userStore'
+import '../../styles/userInfo.css';
+import { useUserStore } from '../../lib/userStore';
 
 const UserInfo = () => {
   const { currentUser } = useUserStore();
 
-  if (!currentUser) { 
+  if (!currentUser) {
     return (
       <div className='userInfo'>
         <div className='user'>
@@ -33,4 +33,4 @@ const UserInfo = () => {
     </div>
   );
 };
-export default UserInfo
+export default UserInfo;

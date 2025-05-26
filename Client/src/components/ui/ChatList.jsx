@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../styles/chatList.css'
 import AddUser from './AddUser';
+import { useUserStore } from '../../lib/userStore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 
 
 const usersArray = [
@@ -16,7 +19,33 @@ const usersArray = [
 
 const ChatList = () => {
 
+  const [chats, setChats] = useState([]);
   const [addMode, setAddMode] = useState(false);
+  const { currentUser } = useUserStore();
+  
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, 'userChats', currentUser.id), async(res) => {
+      const items = res.data().chats
+      
+      const promises = items.map(async (item) => {
+        const userDocRef = doc(db, 'users', item.receiverId);
+        const userDocSnap = await getDoc(userDocRef);
+
+        const user = userDocSnap.data();
+
+        return {...item, user}
+     })
+
+      const chatsData = await Promise.all(promises);
+      setChats(chatsData.sort((a, b) => b.updatedAt - a.updatedAt));
+      
+    });
+
+    return () => {
+      unsub();
+    };
+  }, [currentUser.id]);
+  
 
   return (
     <main className='chatList'>
@@ -33,17 +62,26 @@ const ChatList = () => {
           onClick={() => setAddMode((prev) => !prev)}
         />
       </div>
-      {/*  */}
-      {usersArray.map((user, idx) => (
-        <div className='item' key={idx}>
+
+      {chats.map((chat) => (
+        <div className='item' key={chat.chatId}>
           <img src='./avatar.png' alt='user' />
           <div className='texts'>
-            <span>{user.name}</span>
-            <p>{ `Hello ${user.name}`}</p>
+            <span>Jane Smith</span>
+            <p>{chat.lastMessage}</p>
           </div>
         </div>
       ))}
-     {addMode && <AddUser />}
+
+      <div className='item'>
+        <img src='./avatar.png' alt='user' />
+        <div className='texts'>
+          <span>Jane Smith</span>
+          <p>{`Hello Jane`}</p>
+        </div>
+      </div>
+
+      {addMode && <AddUser />}
     </main>
   );
 }

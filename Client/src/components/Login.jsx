@@ -3,16 +3,14 @@ import '../styles/login.css';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './lib/firebase';
+import { auth } from '../lib/firebase';
 import LoadingDots from './ui/LoadingDots';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   // const navigate = useNavigate();
 
-  
-
-  const handleLogin = async(e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -21,14 +19,13 @@ const Login = () => {
 
     try {
       const res = await signInWithEmailAndPassword(auth, email, password);
-      
-      console.log(res)
-      
-      if (res.user) { 
+
+      console.log(res);
+
+      if (res.user) {
         toast.success('Login Successful');
         window.location.href = '/';
       }
-     
     } catch (error) {
       console.error('Login failed:', error);
       toast.error(error.message || 'Login failed');
@@ -38,8 +35,6 @@ const Login = () => {
 
     // toast.success('Login Successful');
   };
-
-  
 
   return (
     <main className='container'>
@@ -62,7 +57,7 @@ const Login = () => {
               required
             />
             <button disabled={loading}>
-              {loading ? <LoadingDots/> : 'Sign In'}
+              {loading ? <LoadingDots /> : 'Sign In'}
             </button>
           </form>
           <p>

@@ -2,15 +2,15 @@ import { useState } from 'react';
 import '../styles/login.css';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
-import { auth, db } from './lib/firebase';
+import { auth, db } from '../lib/firebase';
 import { toast } from 'react-toastify';
 import avatarPlaceholder from '../../public/avatar.png';
-import fileUpload from './lib/fileUpload';
+import fileUpload from '../lib/fileUpload';
 import { Link, useNavigate } from 'react-router';
 import LoadingDots from './ui/LoadingDots';
 
 const Register = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState({
     file: null,
@@ -111,7 +111,7 @@ const Register = () => {
               required
             />
             <button disabled={loading}>
-              {loading ? (<LoadingDots/>) : 'Sign Up'}
+              {loading ? <LoadingDots /> : 'Sign Up'}
             </button>
           </form>
 

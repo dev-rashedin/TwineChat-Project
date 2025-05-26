@@ -1,4 +1,4 @@
-# Twine Chat App Client
+# Twine Chat App Project
 
 ### Technologies
    - React

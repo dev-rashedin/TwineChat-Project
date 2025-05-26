@@ -4,6 +4,9 @@ const cloudinary = require('cloudinary').v2;
 const cors = require('cors');
 require('dotenv').config();
 
+console.log(process.env.BASE_URL);
+
+
 const app = express();
 app.use(cors());
 
@@ -19,19 +22,27 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // Upload Route
-app.post('/upload', upload.single('file'), async (req, res) => {
-  console.log('clicked')
-  
+app.post('/api/v1/upload', upload.single('file'), async (req, res) => {
   try {
-    const file = req.file;
-    const result = await cloudinary.uploader
-      .upload_stream({ resource_type: 'auto' }, (error, result) => {
-        if (error) return res.status(500).json({ error: error.message });
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file received' });
+    }
+
+    const fileBuffer = req.file.buffer;
+
+    const stream = cloudinary.uploader.upload_stream(
+      { resource_type: 'auto' },
+      (error, result) => {
+        if (error) {
+          console.error('Cloudinary error:', error);
+          return res.status(500).json({ error: 'Upload failed' });
+        }
         return res.status(200).json({ url: result.secure_url });
-      })
-      .end(file.buffer);
-    
-    console.log(result)
+      }
+    );
+
+    stream.end(fileBuffer);
+  
     
   } catch (error) {
     res.status(500).json({ error: error.message });

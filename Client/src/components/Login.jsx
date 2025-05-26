@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from './lib/firebase';
 import { addDoc, collection } from 'firebase/firestore';
+import { useEffect } from 'react';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -55,31 +56,38 @@ const Login = () => {
     }
   };
 
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  useEffect(() => {
+    const fileUpload = async () => {
 
-    const formData = new FormData();
-    formData.append('file', file);
+        if (!avatar.file) {
+          console.error('No avatar file selected');
+          return;
+        }
+      
+        const formData = new FormData();
+        formData.append('file', avatar.file); // 🔑 match the multer field name
+      
+        try {
+          const res = await fetch(import.meta.env.VITE_API_URL, {
+            method: 'POST',
+            body: formData,
+          });
 
-    try {
-      const res = await fetch('http://localhost:5000/upload', {
-        method: 'POST',
-        body: formData,
-      });
+        const data = await res.json();
 
-      const data = await res.json();
-
-      if (res.ok) {
-        console.log('File uploaded:', data.url); // Use this Cloudinary URL as needed
-      } else {
-        console.error('Upload failed:', data.error);
+        if (res.ok) {
+          console.log('File uploaded:', data.url); // Use this Cloudinary URL as needed
+        } else {
+          console.error('Upload failed:', data.error);
+        }
+      } catch (err) {
+        console.error('Error uploading file:', err);
       }
-    } catch (err) {
-      console.error('Error uploading file:', err);
-    }
-  };
-  
+    };
+
+    fileUpload()
+    
+ },[avatar])
 
   return (
     <main className='login'>
@@ -95,7 +103,7 @@ const Login = () => {
       <section className='item'>
         <h2>Create an Account</h2>
         <form onSubmit={handleRegister}>
-          <label htmlFor='file'>
+          <label htmlFor='file' >
             <img src={avatar.url || './avatar.png'} alt='' />
             Upload an image
           </label>
@@ -104,6 +112,7 @@ const Login = () => {
             id='file'
             style={{ display: 'none' }}
             onChange={handleAvatar}
+
           />
           <input type='text' placeholder='Username' name='username' />
           <input type='text' placeholder='Email' name='email' />

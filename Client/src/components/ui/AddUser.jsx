@@ -1,48 +1,35 @@
 import { useEffect, useState } from 'react';
 import { db } from '../../lib/firebase';
 import '../../styles/addUser.css';
-import { collection, getDocs } from 'firebase/firestore';
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDocs,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
+import { useUserStore } from '../../lib/userStore';
 
 const AddUser = () => {
+  // const [user, setUser] = useState(null); 
   const [allUsers, setAllUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchText, setSearchText] = useState('');
 
-  // const handleSearch = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData(e.target);
-  //   const username = formData.get('username');
+  const { currentUser } = useUserStore();
 
-    
-  //   try {
-  //     const userRef = collection(db, 'users');
-  //     const snapshot = await getDocs(userRef);
-
-  //     // Create a query against the collection.
-  //     const q = query(userRef, where('username', '==', username));
-  //     const querySnapshot = await getDocs(q);
-
-  //     console.log(querySnapshot);
-      
-
-  //     if (!querySnapshot.empty) {
-  //       setUser(querySnapshot.docs[0].data());
-  //     }
-  //   } catch (error) {
-  //     console.error('Error searching for user:', error);
-  //   }
-  // };
-
-  const handleAdd = (e) => {
-    e.preventDefault();
-  };
 
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
         const userRef = collection(db, 'users');
         const snapshot = await getDocs(userRef);
-        const users = snapshot.docs.map((doc) => doc.data());
+        const users = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
         setAllUsers(users);
       } catch (error) {
         console.error('Failed to fetch users:', error);
@@ -63,6 +50,46 @@ const AddUser = () => {
     setFilteredUsers(filtered);
   };
 
+  const handleAddUser = async (userId) => {
+    
+    const chatRef = collection(db, 'chats');
+    const userChatsRef = collection(db, 'userChats');
+
+    try {
+      const newChatRef = doc(chatRef);
+
+      await setDoc(newChatRef, {
+        createdAt: serverTimestamp(),
+        messages: [],
+      });
+
+      
+      await updateDoc(doc(userChatsRef, userId), {
+        chats: arrayUnion({
+          chatId: newChatRef.id,
+          lastMessage: '',
+          receiverId: currentUser.id,
+          updatedAt: Date.now(),
+        }),
+      });
+
+      await updateDoc(doc(userChatsRef, currentUser.id), {
+        chats: arrayUnion({
+          chatId: newChatRef.id,
+          lastMessage: '',
+          receiverId: userId,
+          updatedAt: Date.now(),
+        }),
+      });
+      
+
+    } catch (error) {
+      console.error('Error adding user:', error);
+      
+    }
+  };
+
+
 
   return (
     <main className='add-user'>
@@ -74,7 +101,6 @@ const AddUser = () => {
           value={searchText}
           onChange={handleInput}
         />
-        <button>Search</button>
       </form>
 
       {filteredUsers.length > 0 && (
@@ -85,7 +111,7 @@ const AddUser = () => {
                 <img src={user?.avatar || './avatar.png'} alt='' />
                 <span>{user?.username}</span>
               </div>
-              <button onClick={handleAdd}>Add User</button>
+              <button onClick={() => handleAddUser(user.id)}>Add</button>
             </div>
           ))}
         </div>

@@ -4,6 +4,7 @@ import AddUser from './AddUser';
 import { useUserStore } from '../../lib/userStore';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import LoadingDots from './LoadingDots';
 
 
 
@@ -11,9 +12,12 @@ const ChatList = () => {
 
   const [chats, setChats] = useState([]);
   const [addMode, setAddMode] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { currentUser } = useUserStore();
+
   
   useEffect(() => {
+    setLoading(true);
     const unSub = onSnapshot(doc(db, 'userChats', currentUser.id), async(res) => {
       const items = res.data().chats
       
@@ -28,6 +32,7 @@ const ChatList = () => {
 
       const chatsData = await Promise.all(promises);
       setChats(chatsData.sort((a, b) => b.updatedAt - a.updatedAt));
+      setLoading(false);
       
     });
 
@@ -53,24 +58,20 @@ const ChatList = () => {
         />
       </div>
 
-      {chats.length > 0 ? (
+      {loading ? (
+        <div style={{marginTop: '30px', textAlign: 'center'}}>
+          <LoadingDots />
+        </div>
+      ) : (
         chats.map((chat) => (
           <div className='item' key={chat.chatId}>
-            <img src='./avatar.png' alt='user' />
+            <img src={chat.user.avatar || './avatar.png'} alt='user' />
             <div className='texts'>
-              <span>Jane Smith</span>
+              <span>{chat.user.username}</span>
               <p>{chat.lastMessage}</p>
             </div>
           </div>
         ))
-      ) : (
-        <div className='item'>
-          <img src='./avatar.png' alt='user' />
-          <div className='texts'>
-            <span>Jane Smith</span>
-            <p>{`Hello Jane`}</p>
-          </div>
-        </div>
       )}
 
       {addMode && <AddUser />}

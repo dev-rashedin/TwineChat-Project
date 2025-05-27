@@ -23,7 +23,7 @@ const UserInfo = () => {
     <div className='userInfo'>
       <div className='user'>
         <img src={currentUser.avatar || './avatar.png'} alt='' />
-        <h2>{currentUser.username}</h2>
+        <h2>{currentUser.username.split(' ')[0] || 'User'}</h2>
       </div>
       <div className='icons'>
         <img src='./more.png' alt='' />

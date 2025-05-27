@@ -11,6 +11,7 @@
   right: 0;
   margin: auto;
   overflow-y: scroll;
+  min-width: 400px;
   height: 400px;
 
    /* Scrollbar Styling */
@@ -33,30 +34,19 @@
     background-color: var(--secondary-bg-dark);
   }
 
-  form{
-    display: flex;
-    gap: 20px;
-
+  form{   
     input{
       padding: 20px;
       border-radius: 10px;
       border: none;
       outline: none;
-      background-color: rgb(3, 5, 23);
-      color: whitesmoke;
+      background-color: var(--background-color);
+      color: white;
+      width: 100%;
     }
 
     input::placeholder{
       color: var(--text-secondary);
-    }
-
-    button{
-      padding: 20px;
-      border-radius: 10px;
-      background-color: var(--secondary-bg-dark);
-      color: white;
-      border: none;
-      cursor: pointer;
     }
   }
 
@@ -65,6 +55,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 5px;
 
     .detail{
       display: flex;

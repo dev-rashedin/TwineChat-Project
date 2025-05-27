@@ -28,7 +28,7 @@ const ChatList = () => {
     const unSub = onSnapshot(doc(db, 'userChats', currentUser.id), async(res) => {
       const items = res.data().chats
       
-      const promises = items.map(async (item) => {
+      const promises = items?.map(async (item) => {
         const userDocRef = doc(db, 'users', item.receiverId);
         const userDocSnap = await getDoc(userDocRef);
 

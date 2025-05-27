@@ -19,6 +19,8 @@
 
 body {
   background-image: url('/bg.jpg');
+  background-blend-mode: multiply;
+  background-color: #dededf;
   display: flex;
   align-items: center;
   justify-content: center;

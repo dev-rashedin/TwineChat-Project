@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { db } from '../../lib/firebase';
 import '../../styles/addUser.css';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 
 const AddUser = () => {
-  const [user, setUser] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchText, setSearchText] = useState('');
@@ -77,15 +76,6 @@ const AddUser = () => {
         />
         <button>Search</button>
       </form>
-      {/* {user && (
-        <div className='user'>
-          <div className='detail'>
-            <img src={user?.avatar || './avatar.png'} alt='' />
-            <span>{user?.username}</span>
-          </div>
-          <button onClick={handleAdd}>Add User</button>
-        </div>
-      )} */}
 
       {filteredUsers.length > 0 && (
         <div className='user-list'>

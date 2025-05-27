@@ -6,16 +6,6 @@ import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 
 
-const usersArray = [
-  { name: "Rashedin Islam" },
-  {name: 'Laila Arjuman'},
-  { name: "Mehi Eddin" },
-  { name: "Ashfand Shabbir" },
-  { name: 'Rocky Haque' },
-  { name: 'Jannatul Ferdous' },
-  { name: 'Afsarul Ahmed' },
-  {name: 'Nayeem Ahmed'},
-]
 
 const ChatList = () => {
 
@@ -24,7 +14,7 @@ const ChatList = () => {
   const { currentUser } = useUserStore();
   
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, 'userChats', currentUser.id), async(res) => {
+    const unSub = onSnapshot(doc(db, 'userChats', currentUser.id), async(res) => {
       const items = res.data().chats
       
       const promises = items.map(async (item) => {
@@ -42,7 +32,7 @@ const ChatList = () => {
     });
 
     return () => {
-      unsub();
+      unSub();
     };
   }, [currentUser.id]);
   
@@ -63,23 +53,25 @@ const ChatList = () => {
         />
       </div>
 
-      {chats.map((chat) => (
-        <div className='item' key={chat.chatId}>
+      {chats.length > 0 ? (
+        chats.map((chat) => (
+          <div className='item' key={chat.chatId}>
+            <img src='./avatar.png' alt='user' />
+            <div className='texts'>
+              <span>Jane Smith</span>
+              <p>{chat.lastMessage}</p>
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className='item'>
           <img src='./avatar.png' alt='user' />
           <div className='texts'>
             <span>Jane Smith</span>
-            <p>{chat.lastMessage}</p>
+            <p>{`Hello Jane`}</p>
           </div>
         </div>
-      ))}
-
-      <div className='item'>
-        <img src='./avatar.png' alt='user' />
-        <div className='texts'>
-          <span>Jane Smith</span>
-          <p>{`Hello Jane`}</p>
-        </div>
-      </div>
+      )}
 
       {addMode && <AddUser />}
     </main>

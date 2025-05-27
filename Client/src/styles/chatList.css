@@ -25,8 +25,8 @@
   .search {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
+    gap: 15px;
+    padding: 10px;
 
     .searchBar {
       flex: 1;
@@ -36,6 +36,7 @@
       gap: 20px;
       border-radius: 10px;
       padding: 10px;
+      max-width: 200px;
 
       input {
         background-color: transparent;

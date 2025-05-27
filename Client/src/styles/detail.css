@@ -1,5 +1,6 @@
 .detail {
   flex: 1;
+  max-width: 320px;
 
   .user {
     padding: 15px;
@@ -21,12 +22,14 @@
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
+    margin-top: -8px;
 
     .option {
       .title {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        margin-top: -2px;
 
         img {
           width: 30px;
@@ -101,8 +104,17 @@
         border-radius: 5px;
         cursor: pointer;
         font-size: 14px;
-        margin-top: 15px;
+        margin-top: 12px;
       }
     }
   }
 }
+
+
+@media screen and (max-width: 1024px) {
+  .detail {
+    display: none;
+  }
+  
+}
+

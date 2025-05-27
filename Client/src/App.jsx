@@ -8,11 +8,14 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './lib/firebase';
 import { useUserStore } from './lib/userStore';
 import Placeholder from './components/ui/Placeholder';
+import { useChatStore } from './lib/chatStore';
 
 const App = () => {
   const navigate = useNavigate();
 
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
+
+  const { chatId } = useChatStore();
 
   // if(!user) {
   //   navigate('/login')
@@ -39,8 +42,8 @@ const App = () => {
     <div className='container'>
       <>
         <List />
-        <Chat />
-        <Detail />
+        {chatId && <Chat />}
+        {chatId && <Detail />}
       </>
 
       <Notification />

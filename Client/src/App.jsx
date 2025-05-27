@@ -32,11 +32,11 @@ const App = () => {
     };
   }, [fetchUserInfo]);
 
-  if (isLoading) return <Placeholder />;
+  // if (isLoading) return <Placeholder />;
 
-  if (!currentUser) {
-    navigate('/login');
-  }
+  // if (!currentUser) {
+  //   navigate('/login');
+  // }
 
   return (
     <div className='container'>

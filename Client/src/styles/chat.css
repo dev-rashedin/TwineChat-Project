@@ -10,6 +10,10 @@
    flex: 3
     }
 
+    @media (max-width: 450px) {
+      display: none;
+       }
+
   /* top part style */
   .top {
     padding: 20px;

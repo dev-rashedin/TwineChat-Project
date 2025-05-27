@@ -5,8 +5,7 @@
   justify-content: center;
   height: 90vh;
   padding: 50px;
-  min-width: 500px;
-  max-width: 600px;
+  min-width: 800px;
   margin: 0 auto;
   background: transparent;
  
@@ -48,4 +47,24 @@
   100% {
     opacity: 1;
   }
+}
+
+
+@media screen and (max-width: 1024px) {
+  .placeholder {
+    min-width: 500px;
+  } 
+}
+
+@media screen and (max-width: 768px) {
+  .placeholder {
+    height: 100vh;
+  } 
+}
+
+@media screen and (max-width: 480px) {
+  .placeholder {
+    height: 99vh;
+    min-width: 400px;
+  } 
 }

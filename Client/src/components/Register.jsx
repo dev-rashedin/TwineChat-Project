@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '../styles/login.css';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import { toast } from 'react-toastify';
 import avatarPlaceholder from '../../public/avatar.png';
@@ -21,9 +21,6 @@ const Register = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // const previewUrl = URL.createObjectURL(file);
-
-    // Upload the file immediately
     const uploadedUrl = await fileUpload(file);
 
     if (uploadedUrl) {
@@ -32,10 +29,6 @@ const Register = () => {
         url: uploadedUrl,
       });
     } else {
-      // setAvatar({
-      //   file,
-      //   url: previewUrl,
-      // });
       console.error('Upload failed');
     }
   };

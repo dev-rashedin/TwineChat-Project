@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import '../../styles/chatList.css'
+import '../../styles/chatList.css';
 import AddUser from './AddUser';
 import { useUserStore } from '../../lib/userStore';
 import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
@@ -7,10 +7,7 @@ import { db } from '../../lib/firebase';
 import LoadingDots from './LoadingDots';
 import { useChatStore } from '../../lib/chatStore';
 
-
-
 const ChatList = () => {
-
   const [chats, setChats] = useState([]);
   const [addMode, setAddMode] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -19,29 +16,29 @@ const ChatList = () => {
   const { currentUser } = useUserStore();
   const { chatId, changeChat } = useChatStore();
 
-  console.log(chatId)
-  
+  console.log(chatId);
 
-  
   useEffect(() => {
     setLoading(true);
-    const unSub = onSnapshot(doc(db, 'userChats', currentUser.id), async(res) => {
-      const items = res.data().chats
-      
-      const promises = items?.map(async (item) => {
-        const userDocRef = doc(db, 'users', item.receiverId);
-        const userDocSnap = await getDoc(userDocRef);
+    const unSub = onSnapshot(
+      doc(db, 'userChats', currentUser.id),
+      async (res) => {
+        const items = res.data().chats;
 
-        const user = userDocSnap.data();
+        const promises = items?.map(async (item) => {
+          const userDocRef = doc(db, 'users', item.receiverId);
+          const userDocSnap = await getDoc(userDocRef);
 
-        return {...item, user}
-     })
+          const user = userDocSnap.data();
 
-      const chatsData = await Promise.all(promises);
-      setChats(chatsData.sort((a, b) => b.updatedAt - a.updatedAt));
-      setLoading(false);
-      
-    });
+          return { ...item, user };
+        });
+
+        const chatsData = await Promise.all(promises);
+        setChats(chatsData.sort((a, b) => b.updatedAt - a.updatedAt));
+        setLoading(false);
+      }
+    );
 
     return () => {
       unSub();
@@ -71,7 +68,6 @@ const ChatList = () => {
       console.log(err);
     }
   };
-  
 
   return (
     <main className='chatList'>
@@ -90,12 +86,17 @@ const ChatList = () => {
       </div>
 
       {loading ? (
-        <div style={{marginTop: '50px', marginRight: '60px'}}>
+        <div style={{ marginTop: '50px', marginRight: '60px' }}>
           <LoadingDots />
         </div>
       ) : (
         chats.map((chat) => (
-          <div className='item' key={chat.chatId} onClick={() => handleSelect(chat)}>
+          <div
+            className='item'
+            key={chat.chatId}
+            onClick={() => handleSelect(chat)}
+            style={{ backgroundColor: chat?.isSeen ? "transparent" : 'var(--background-color)'  }}
+          >
             <img src={chat.user.avatar || './avatar.png'} alt='user' />
             <div className='texts'>
               <span>{chat.user.username}</span>
@@ -108,5 +109,5 @@ const ChatList = () => {
       {addMode && <AddUser />}
     </main>
   );
-}
-export default ChatList
+};
+export default ChatList;

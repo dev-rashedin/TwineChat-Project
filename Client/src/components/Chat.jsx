@@ -124,7 +124,12 @@ const Chat = () => {
       {/* center portion */}
       <section className='center'>
         {chat?.messages?.map((message) => (
-          <div className='message' key={message.createdAt}>
+          <div
+            className={
+              message.senderId === currentUser?.id ? 'message own' : 'message'
+            }
+            key={message?.createAt}
+          >
             <img src='./avatar.png' alt='User' />
             <div className='texts'>
               {message.img && <img src={message.img} alt='Image' />}

@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import { toast } from 'react-toastify';
-import avatarPlaceholder from '../../public/avatar.png';
+// import avatarPlaceholder from '../../public/avatar.png';
 import fileUpload from '../lib/fileUpload';
 import { Link, useNavigate } from 'react-router';
 import LoadingDots from './ui/LoadingDots';
@@ -73,7 +73,7 @@ const Register = () => {
           <h2>Create an Account</h2>
           <form onSubmit={handleRegister}>
             <label htmlFor='file'>
-              <img src={avatar.url || avatarPlaceholder} alt='User' />
+              <img src={avatar.url || '/avatar.png'} alt='User' />
               Upload an image
             </label>
             <input

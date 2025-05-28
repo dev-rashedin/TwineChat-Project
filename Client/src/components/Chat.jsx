@@ -41,7 +41,7 @@ const Chat = () => {
     };
   }, [chatId]);
 
-  console.log(chat);
+  // console.log(chat);
 
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);
@@ -128,7 +128,7 @@ const Chat = () => {
             className={
               message.senderId === currentUser?.id ? 'message own' : 'message'
             }
-            key={message?.createAt}
+            key={message?.createdAt}
           >
             <img src='./avatar.png' alt='User' />
             <div className='texts'>

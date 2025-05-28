@@ -2,8 +2,6 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore';
 
-console.log(import.meta.env.VITE_APP_ID);
-
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

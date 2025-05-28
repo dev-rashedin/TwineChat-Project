@@ -24,6 +24,8 @@ const App = () => {
   useEffect(() => {
     const unSubscribe = () =>
       onAuthStateChanged(auth, (user) => {
+        console.log('the logged in user is',user);
+        
         fetchUserInfo(user?.uid);
       });
 

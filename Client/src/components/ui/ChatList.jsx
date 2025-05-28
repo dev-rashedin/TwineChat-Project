@@ -16,7 +16,7 @@ const ChatList = () => {
   const { currentUser } = useUserStore();
   const { chatId, changeChat } = useChatStore();
 
-  console.log(chatId);
+  // console.log(chatId);
 
   useEffect(() => {
     setLoading(true);

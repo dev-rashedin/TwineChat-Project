@@ -69,13 +69,17 @@ const ChatList = () => {
     }
   };
 
+  const filteredChats = chats.filter((c) =>
+    c.user.username.toLowerCase().includes(input.toLowerCase())
+  );
+
   return (
     <main className='chatList'>
       {/* search */}
       <div className='search'>
         <div className='searchBar'>
           <img src='./search.png' alt='search' />
-          <input type='text' placeholder='Search...' />
+          <input type='text' placeholder='Search...' onChange={(e) => setInput(e.target.value)} />
         </div>
         <img
           src={addMode ? './minus.png' : './plus.png'}
@@ -90,7 +94,7 @@ const ChatList = () => {
           <LoadingDots />
         </div>
       ) : (
-        chats.map((chat) => (
+        filteredChats.map((chat) => (
           <div
             className='item'
             key={chat.chatId}

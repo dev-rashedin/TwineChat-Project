@@ -176,9 +176,14 @@ const Chat = () => {
           type='text'
           name=''
           id=''
-          placeholder='Type a message...'
+          placeholder={
+            isCurrentUserBlocked || isReceiverBlocked
+              ? 'You cannot send any message'
+              : 'Type a message...'
+          }
           onChange={(e) => setText(e.target.value)}
           value={text}
+          disabled={isCurrentUserBlocked || isReceiverBlocked}
         />
 
         <div className='emoji'>
@@ -191,7 +196,11 @@ const Chat = () => {
             <EmojiPicker open={open} onEmojiClick={handleEmoji} />
           </div>
         </div>
-        <button className='send-button' onClick={handleSend}>
+        <button
+          className='send-button'
+          onClick={handleSend}
+          disabled={isCurrentUserBlocked || isReceiverBlocked}
+        >
           Send
         </button>
       </section>

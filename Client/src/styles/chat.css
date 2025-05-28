@@ -214,6 +214,7 @@
       }
 
       &:disabled {
+        background-color: var(--disabled-color);
         cursor: not-allowed;
       }
     }
@@ -242,7 +243,8 @@
       cursor: pointer;
 
       &:disabled {
-        background-color: var(--border-color);
+        background-color: var(--disabled-color);
+        color: var(--text-secondary);
         cursor: not-allowed;
       }
     }

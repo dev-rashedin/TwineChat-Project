@@ -127,7 +127,9 @@ const Detail = () => {
         </div>
 
         {/* block button */}
-        <button onClick={handleBlock}>Block User</button>
+        <button onClick={handleBlock}>{
+        isCurrentUserBlocked ? 'You are blocked' : isReceiverBlocked ? 'Unblock User' : 'Block User'
+        }</button>
         <button className='logout' onClick={handleLogout}>
           Logout
         </button>

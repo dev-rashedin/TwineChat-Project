@@ -95,11 +95,26 @@ const ChatList = () => {
             className='item'
             key={chat.chatId}
             onClick={() => handleSelect(chat)}
-            style={{ backgroundColor: chat?.isSeen ? "transparent" : 'var(--background-color)'  }}
+            style={{
+              backgroundColor: chat?.isSeen
+                ? 'transparent'
+                : 'var(--background-color)',
+            }}
           >
-            <img src={chat.user.avatar || './avatar.png'} alt='user' />
+            <img
+              src={
+                chat.user.blocked.includes(currentUser.id)
+                  ? './avatar.png'
+                  : chat.user.avatar || './avatar.png'
+              }
+              alt='user'
+            />
             <div className='texts'>
-              <span>{chat.user.username}</span>
+              <span>
+                {chat.user.blocked.includes(currentUser.id)
+                  ? 'User'
+                  : chat.user.username}
+              </span>
               <p>{chat.lastMessage}</p>
             </div>
           </div>

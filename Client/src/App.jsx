@@ -22,17 +22,14 @@ const App = () => {
   // }
 
   useEffect(() => {
-    const unSubscribe = () =>
-      onAuthStateChanged(auth, (user) => {
-        console.log('the logged in user is',user);
-        
-        fetchUserInfo(user?.uid);
-      });
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log('The logged in user is:', user);
+      fetchUserInfo(user?.uid);
+    });
 
-    return () => {
-      unSubscribe();
-    };
+    return () => unsubscribe(); // Clean up when the component unmounts
   }, [fetchUserInfo]);
+  
 
   if (isLoading) return <Placeholder />;
 

@@ -18,6 +18,9 @@ const ChatList = () => {
 
   // console.log(chatId);
 
+  console.log(currentUser)
+  
+
   useEffect(() => {
     setLoading(true);
     const unSub = onSnapshot(
@@ -25,9 +28,13 @@ const ChatList = () => {
       async (res) => {
         const items = res.data().chats;
 
+        console.log('items',items)
+        
+
         const promises = items?.map(async (item) => {
           const userDocRef = doc(db, 'users', item.receiverId);
           const userDocSnap = await getDoc(userDocRef);
+console.log('userDocSnap',userDocSnap)
 
           const user = userDocSnap.data();
 

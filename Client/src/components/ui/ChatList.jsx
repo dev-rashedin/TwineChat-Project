@@ -14,11 +14,7 @@ const ChatList = () => {
   const [input, setInput] = useState('');
 
   const { currentUser } = useUserStore();
-  const { chatId, changeChat } = useChatStore();
-
-  // console.log(chatId);
-
-  console.log(currentUser)
+  const { changeChat } = useChatStore();
   
 
   useEffect(() => {
@@ -26,15 +22,11 @@ const ChatList = () => {
     const unSub = onSnapshot(
       doc(db, 'userChats', currentUser.id),
       async (res) => {
-        const items = res.data().chats;
-
-        console.log('items',items)
-        
+        const items = res.data().chats;       
 
         const promises = items?.map(async (item) => {
           const userDocRef = doc(db, 'users', item.receiverId);
           const userDocSnap = await getDoc(userDocRef);
-console.log('userDocSnap',userDocSnap)
 
           const user = userDocSnap.data();
 

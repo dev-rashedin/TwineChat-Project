@@ -21,19 +21,31 @@ const Chat = () => {
     file: null,
     url: '',
   });
+  const [loading, setLoading] = useState(true);
 
   const endRef = useRef(null);
 
   const { currentUser } = useUserStore();
   const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChatStore();
 
+  console.log(chatId)
+  
+
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   useEffect(() => {
+
+    if (!chatId) return;
+
     const unSub = onSnapshot(doc(db, 'chats', chatId), (res) => {
-      setChat(res.data());
+      if (res.exists()) {
+        setChat(res.data());
+      } else {
+        setChat(null);
+      }
+      setLoading(false);
     });
 
     return () => {
@@ -41,7 +53,7 @@ const Chat = () => {
     };
   }, [chatId]);
 
-  // console.log(chat);
+  console.log(chat);
 
   const handleEmoji = (e) => {
     setText((prev) => prev + e.emoji);

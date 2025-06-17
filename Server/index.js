@@ -4,8 +4,6 @@ const cloudinary = require('cloudinary').v2;
 const cors = require('cors');
 require('dotenv').config();
 
-console.log(process.env.BASE_URL);
-
 
 const app = express();
 app.use(cors());

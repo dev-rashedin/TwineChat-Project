@@ -1,0 +1,40 @@
+:root {
+  --background-color: rgba(17, 25, 40, 0.7);
+  --secondary-background: #432c85;
+  --secondary-bg-dark: #3c096c;
+  --border-color: #dddddd35;
+  --text-secondary: #a5a5a5;
+  --danger-color: #8b008b;
+  --danger-color-secondary: #800080;
+  --disabled-color: #2c2929;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-image: url('/bg.jpg');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: white;
+  overflow-x: hidden;
+
+}
+
+.container {
+  width: 80vw;
+
+  height: 90vh;
+  background-color: var(--background-color);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  display: flex;
+}

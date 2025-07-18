@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const cors = require('cors');
+const { StatusCodes } = require('http-status-toolkit');
+const { notFoundHandler, globalErrorHandler } = require('express-error-toolkit');
 require('dotenv').config();
 
 console.log(process.env.BASE_URL);
@@ -53,10 +55,13 @@ app.post('/api/v1/upload', upload.single('file'), async (req, res) => {
 });
 
 app.get('/', (req, res) => { 
-  res.send(
+  res.status(StatusCodes.OK).send(
     '<h1 style="display: flex; justify-content: center; align-items: center; min-height: 90vh">Welcome to the File Upload API</h1>'
   );
 })
+
+app.use(notFoundHandler);
+app.use(globalErrorHandler)
 
 // Start Server
 const PORT = process.env.PORT || 5000;

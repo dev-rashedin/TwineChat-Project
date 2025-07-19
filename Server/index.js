@@ -3,10 +3,18 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const cors = require('cors');
 const { StatusCodes } = require('http-status-toolkit');
-const { notFoundHandler, globalErrorHandler, BadRequestError } = require('express-error-toolkit');
+const { notFoundHandler, globalErrorHandler, BadRequestError, setErrorOptions } = require('express-error-toolkit');
 require('dotenv').config();
 
 console.log(process.env.BASE_URL);
+
+// setErrorOptions({
+//   introLine: 'Error Happens: Even the best code can have issues.',
+// })
+
+// // setErrorOptions({
+// //   introLine: false
+// // })
 
 
 const app = express();
@@ -55,11 +63,6 @@ app.post('/api/v1/upload', upload.single('file'), async (req, res) => {
 });
 
 app.get('/', (req, res) => { 
-  throw new BadRequestError('Bad Request Error', {
-    details: 'This is a custom error message for demonstration purposes.',
-    link: 'https://example.com/error-details',
-    documentation: 'https://example.com/docs'
-  })
   res.status(StatusCodes.OK).send(
     '<h1 style="display: flex; justify-content: center; align-items: center; min-height: 90vh">Welcome to the File Upload API</h1>'
   );

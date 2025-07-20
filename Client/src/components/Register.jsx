@@ -2,13 +2,14 @@ import { useState } from 'react';
 import '../styles/login.css';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
-import { auth, db } from './lib/firebase';
+import { auth, db } from '../lib/firebase';
 import { toast } from 'react-toastify';
 import avatarPlaceholder from '../../public/avatar.png';
-import fileUpload from './lib/fileUpload';
-import { Link } from 'react-router';
+import fileUpload from '../lib/fileUpload';
+import { Link, useNavigate } from 'react-router';
 
 const Register = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState({
     file: null,
@@ -16,8 +17,11 @@ const Register = () => {
   });
 
   const handleAvatar = async (e) => {
+
     const file = e.target.files[0];
-    if (!file) return;
+
+
+    if (!file) return; 
 
     // const previewUrl = URL.createObjectURL(file);
 
@@ -44,23 +48,15 @@ const Register = () => {
 
     const formData = new FormData(e.target);
     const { username, email, password } = Object.fromEntries(formData);
+    
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
-      const usersRef = await addDoc(collection(db, 'users'), {
-        username,
-        email,
-        avatar: avatar.url || '',
-        blockedList: [],
-      });
-
-      const chatRef = await addDoc(collection(db, 'userChats'), {
-        chats: [],
-      });
 
       toast.success('Account created! You can now login now.');
       e.target.reset();
+      navigate('/login');
     } catch (error) {
       console.error(error);
       toast.error(error.message);

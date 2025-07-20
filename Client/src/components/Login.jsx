@@ -1,81 +1,39 @@
 import { useState } from 'react';
 import '../styles/login.css';
 import { toast } from 'react-toastify';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from './lib/firebase';
-import { addDoc, collection } from 'firebase/firestore';
-import avatarPlaceholder from '../../public/avatar.png';
-import fileUpload from './lib/fileUpload';
-import { Link } from 'react-router';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../lib/firebase';
+import { Link, useNavigate } from 'react-router';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [avatar, setAvatar] = useState({
-    file: null,
-    url: '',
-  });
 
 
-  const handleAvatar = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
 
-    // const previewUrl = URL.createObjectURL(file);
-
-    // Upload the file immediately
-    const uploadedUrl = await fileUpload(file);
-
-    if (uploadedUrl) {
-      setAvatar({
-        file,
-        url: uploadedUrl,
-      });
-    } else {
-      // setAvatar({
-      //   file,
-      //   url: previewUrl,
-      // });
-      console.error('Upload failed');
-    }
-  };
-  
-
-  const handleLogin = (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
-    toast.success('Login Successful');
-  };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
     const formData = new FormData(e.target);
-    const { username, email, password } = Object.fromEntries(formData);
-
+    const { email, password } = Object.fromEntries(formData);
+    
     try {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
+      setLoading(true);
+      const res = await signInWithEmailAndPassword(auth, email, password);
 
-      const usersRef = await addDoc(collection(db, 'users'), {
-        username,
-        email,
-        avatar: avatar.url || '',
-        blockedList: [],
-      });
+      console.log(res)
 
-      const chatRef = await addDoc(collection(db, 'userChats'), {
-        chats: []
-      });
-
-      toast.success("Account created! You can now login now.");
-      e.target.reset();
+    navigate('/')
+      
+      
     } catch (error) {
       console.error(error);
       toast.error(error.message);
     } finally {
       setLoading(false);
+      
     }
   };
-  
+
 
   return (
     <main className='container'>
@@ -90,8 +48,8 @@ const Login = () => {
             </button>
           </form>
           <p>
-            Don&apos;t have an account? {' '}
-            <Link className='link' to='/register' >
+            Don&apos;t have an account?{' '}
+            <Link className='link' to='/register'>
               Register
             </Link>
           </p>

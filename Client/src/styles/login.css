@@ -68,14 +68,14 @@
     }
 
    .link{
-      text-decoration: none;
+      color: white;
       cursor: pointer;
       padding-left: 8px;
       font-size: 18px;
       font-weight: 500;
   
       &:hover {
-        color: #071d5b;
+        color: #aaabae;
       }
     }
   }

@@ -3,7 +3,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const cors = require('cors');
 const { StatusCodes } = require('http-status-toolkit');
-const { notFoundHandler, globalErrorHandler, BadRequestError, setErrorOptions } = require('express-error-toolkit');
+const { notFoundHandler, globalErrorHandler } = require('express-error-toolkit');
 require('dotenv').config();
 
 console.log(process.env.BASE_URL);
@@ -35,7 +35,7 @@ const upload = multer({ storage });
 app.post('/api/v1/upload', upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ error: 'No file received' });
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: 'No file received' });
     }
 
     const fileBuffer = req.file.buffer;
@@ -48,9 +48,9 @@ app.post('/api/v1/upload', upload.single('file'), async (req, res) => {
       (error, result) => {
         if (error) {
           console.error('Cloudinary error:', error);
-          return res.status(500).json({ error: 'Upload failed' });
+          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Upload failed' });
         }
-        return res.status(200).json({ url: result.secure_url });
+        return res.status(StatusCodes.OK).json({ url: result.secure_url });
       }
     );
 

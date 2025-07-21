@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../styles/login.css';
 import { toast } from 'react-toastify';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../lib/firebase';
+import { auth } from '../lib/firebase';
 import { Link, useNavigate } from 'react-router';
 
 const Login = () => {
@@ -41,8 +41,8 @@ const Login = () => {
         <div className='item'>
           <h2>Welcome back,</h2>
           <form onSubmit={handleLogin}>
-            <input type='text' placeholder='Email' name='email' />
-            <input type='password' placeholder='Password' name='password' />
+            <input type='text' placeholder='Email' name='email' autoComplete='email' />
+            <input type='password' placeholder='Password' name='password' autoComplete='current-password' />
             <button disabled={loading}>
               {loading ? 'Loading...' : 'Sign In'}
             </button>

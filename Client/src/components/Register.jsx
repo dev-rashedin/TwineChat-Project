@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import '../styles/login.css';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import { toast } from 'react-toastify';
-import avatarPlaceholder from '../../public/avatar.png';
+import avatarPlaceholder from '/avatar.png';
 import fileUpload from '../lib/fileUpload';
 import { Link, useNavigate } from 'react-router';
 
@@ -52,6 +52,19 @@ const Register = () => {
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
+
+      console.log('user uid',res.user.uid)
+      
+      await setDoc(doc(db, 'users', res.user.uid), {
+        username,
+        email,
+        id: res.user.uid,
+        blocked: []
+      })
+
+      await setDoc(doc(db, 'userChats', res.user.uid), {
+        chats: []
+      })
 
 
       toast.success('Account created! You can now login now.');

@@ -12,8 +12,6 @@
     align-items: center;
     gap: 20px;
 
-  
-
     form {
       display: flex;
       flex-direction: column;
@@ -30,6 +28,17 @@
         color: white;
         border-radius: 5px;
         width: 400px;
+      }
+
+      input:focus {
+        background-color: #080121;
+        color: white;
+      }
+
+      input:-webkit-autofill {
+        box-shadow: inset 0 0 0 1000px #03032c !important;
+        -webkit-text-fill-color: white !important;
+        caret-color: white !important;
       }
 
       label {
@@ -64,20 +73,19 @@
           background-color: var(--disabled-color);
           color: gray;
         }
-      }     
+      }
     }
 
-   .link{
+    .link {
       color: white;
       cursor: pointer;
       padding-left: 8px;
       font-size: 18px;
       font-weight: 500;
-  
+
       &:hover {
         color: #aaabae;
       }
     }
   }
-
 }

@@ -41,6 +41,7 @@ const Register = () => {
       console.error('Upload failed');
     }
   };
+  
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -58,6 +59,7 @@ const Register = () => {
       await setDoc(doc(db, 'users', res.user.uid), {
         username,
         email,
+        avatar: avatar.url,
         id: res.user.uid,
         blocked: []
       })

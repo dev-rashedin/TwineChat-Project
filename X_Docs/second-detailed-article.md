@@ -62,6 +62,7 @@ export const db = getFirestore();
 
 ---
 
+
 ## 👤 Step 2: Set Up Authentication  
 **(We will create two collections in Firestore while registering any user)**
 
@@ -75,9 +76,37 @@ Creating these two collections at the time of registration lays the foundation f
 
 
 ```js
+import { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../lib/firebase';
+import fileUpload from '../lib/fileUpload';
 
-export const register = async (email, password) => {
+export const RegisterUser = () => {
+  const [avatar, setAvatar] = useState({
+    file: null,
+    url: '',
+  });
+
+  const handleAvatar = async (e) => {
+
+    const file = e.target.files[0];
+
+
+    if (!file) return; 
+    const uploadedUrl = await fileUpload(file);
+
+    if (uploadedUrl) {
+      setAvatar({
+        file,
+        url: uploadedUrl,
+      });
+    } else {
+      console.error('Upload failed');
+    }
+  };
+
+export const handleRegister = async (email, password) => {
   await createUserWithEmailAndPassword(auth, email, password);
 
    const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -93,13 +122,16 @@ export const register = async (email, password) => {
         chats: []
       })
 };
+}
 
 export const login = async (email, password) => {
   await signInWithEmailAndPassword(auth, email, password);
 };
 ```
 
+> To get the fileUpload code and complete backend code (express, multer) see step 9 and 10
 ---
+
 
 ## 📦 Step 3: Zustand for State Management
 

@@ -34,10 +34,6 @@ const Register = () => {
         url: uploadedUrl,
       });
     } else {
-      // setAvatar({
-      //   file,
-      //   url: previewUrl,
-      // });
       console.error('Upload failed');
     }
   };

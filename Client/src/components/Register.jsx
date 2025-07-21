@@ -11,12 +11,15 @@ import { Link, useNavigate } from 'react-router';
 const Register = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [fileUploadLoading, setFileUploadLoading] = useState(false);
   const [avatar, setAvatar] = useState({
     file: null,
     url: '',
   });
 
   const handleAvatar = async (e) => {
+
+    setFileUploadLoading(true);
 
     const file = e.target.files[0];
 
@@ -33,8 +36,10 @@ const Register = () => {
         file,
         url: uploadedUrl,
       });
+      setFileUploadLoading(false);
     } else {
       console.error('Upload failed');
+      setFileUploadLoading(false);
     }
   };
   
@@ -76,8 +81,12 @@ const Register = () => {
     }
   };
 
+
   return (
-    <main className='container'>
+    <main
+      className='container'
+      style={fileUploadLoading ? { filter: 'blur(5px)' } : {}}
+    >
       <div className='login'>
         <div className='item'>
           <h2>Create an Account</h2>

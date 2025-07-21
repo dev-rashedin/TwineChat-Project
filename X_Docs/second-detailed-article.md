@@ -3,10 +3,10 @@
 
 Creating a full-fledged real-time chat application may sound complex at first, but with the power of Firebase and React, it becomes surprisingly manageable—even beginner-friendly. In this tutorial, we'll build a chat app that supports:
 
-- User authentication
-- Real-time messaging via Firestore
-- Contact management
-- Optional media uploads via a Node.js backend using Multer and ImgUr
+- Authentication (Firebase Auth)
+- Real-time messaging (Firestore)
+- State management (Zustand)
+- Optional image upload backend (Node.js + Multer + ImgUr)
 
 This guide is tailored for developers who are familiar with the basics of React and want to learn how to structure and build a robust chat application step by step.
 
@@ -15,9 +15,12 @@ This guide is tailored for developers who are familiar with the basics of React 
 ## 🏗️ Project Overview
 
 - **Frontend**: React.js + Zustand (state management)
-- **Backend**: Firebase (Firestore & Authentication)
+- **Backend**: Firebase (Firestore, Storage & Authentication)
 - **Optional Backend**: Express + Multer (for image uploads)
 - **Media Storage**: ImgUr or Cloudinary
+
+> **Note:** I haven't used Firebase Storage in this project because it's not available in the free Spark plan. You'll need to upgrade your billing plan to access it.  
+> If you'd like to use Firebase Storage instead of a custom backend for file uploads, follow this guide: [Firebase Storage Setup](https://surl.li/zdvglo)
 
 ---
 
@@ -39,7 +42,6 @@ Configure Firebase:
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -56,18 +58,40 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth()
 export const db = getFirestore();
-export const storage = getStorage(); // optional, if you have access
 ```
 
 ---
 
-## 👤 Step 2: Set Up Authentication
+## 👤 Step 2: Set Up Authentication  
+**(We will create two collections in Firestore while registering any user)**
+
+When a new user signs up, we not only authenticate them using Firebase Authentication, but we also need to store their basic profile data in Firestore. For that, we create two collections:
+
+1. `users` — This holds static information like  username, email, avatar, id and an empty array of blocked users. It helps you retrieve public-facing user info without querying Firebase Auth repeatedly.
+
+2. `userChats` — This is a dynamic collection that stores metadata about each chat the user is involved in. It allows you to quickly fetch a user's conversation list with details like last message, timestamp, and participant info.
+
+Creating these two collections at the time of registration lays the foundation for everything else in the app: real-time messaging, contact lists, and chat syncing.
+
 
 ```js
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 export const register = async (email, password) => {
   await createUserWithEmailAndPassword(auth, email, password);
+
+   const res = await createUserWithEmailAndPassword(auth, email, password);
+      
+      await setDoc(doc(db, 'users', res.user.uid), {
+        username,
+        email,
+        id: res.user.uid,
+        blocked: []
+      })
+
+      await setDoc(doc(db, 'userChats', res.user.uid), {
+        chats: []
+      })
 };
 
 export const login = async (email, password) => {
@@ -246,25 +270,58 @@ Instead of Firebase Storage, you can upload to ImgUr.
 ```js
 const express = require('express');
 const multer = require('multer');
-const axios = require('axios');
-const FormData = require('form-data');
+const cloudinary = require('cloudinary').v2;
+const cors = require('cors');
+const { StatusCodes } = require('http-status-toolkit');
+const { notFoundHandler, globalErrorHandler, asyncHandler } = require('express-error-toolkit');
+require('dotenv').config();
 
-const router = express.Router();
-const upload = multer();
+const app = express();
+app.use(cors());
 
-router.post('/upload', upload.single('image'), async (req, res) => {
-  const form = new FormData();
-  form.append('image', req.file.buffer.toString('base64'));
-
-  const response = await axios.post('https://api.imgur.com/3/image', form, {
-    headers: {
-      Authorization: 'Client-ID YOUR_CLIENT_ID',
-      ...form.getHeaders(),
-    },
-  });
-
-  res.json({ url: response.data.data.link });
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+// Configure Multer
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// Upload Route
+app.post(
+  '/api/v1/upload',
+  upload.single('file'),
+  asyncHandler(async (req, res) => {
+    if (!req.file) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: 'No file received' });
+    }
+
+    const fileBuffer = req.file.buffer;
+
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: 'auto',
+        folder: 'twineChat_firebase',
+      },
+      (error, result) => {
+        if (error) {
+          console.error('Cloudinary error:', error);
+          return res
+            .status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .json({ error: 'Upload failed' });
+        }
+        return res.status(StatusCodes.OK).json({ url: result.secure_url });
+      }
+    );
+
+    stream.end(fileBuffer);
+  })
+);
 ```
 
 ---

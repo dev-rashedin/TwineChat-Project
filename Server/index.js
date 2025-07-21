@@ -3,18 +3,9 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const cors = require('cors');
 const { StatusCodes } = require('http-status-toolkit');
-const { notFoundHandler, globalErrorHandler } = require('express-error-toolkit');
+const { notFoundHandler, globalErrorHandler, asyncHandler } = require('express-error-toolkit');
 require('dotenv').config();
 
-console.log(process.env.BASE_URL);
-
-// setErrorOptions({
-//   introLine: 'Error Happens: Even the best code can have issues.',
-// })
-
-// // setErrorOptions({
-// //   introLine: false
-// // })
 
 
 const app = express();
@@ -32,10 +23,14 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // Upload Route
-app.post('/api/v1/upload', upload.single('file'), async (req, res) => {
-  try {
+app.post(
+  '/api/v1/upload',
+  upload.single('file'),
+  asyncHandler(async (req, res) => {
     if (!req.file) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ error: 'No file received' });
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: 'No file received' });
     }
 
     const fileBuffer = req.file.buffer;
@@ -48,19 +43,17 @@ app.post('/api/v1/upload', upload.single('file'), async (req, res) => {
       (error, result) => {
         if (error) {
           console.error('Cloudinary error:', error);
-          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Upload failed' });
+          return res
+            .status(StatusCodes.INTERNAL_SERVER_ERROR)
+            .json({ error: 'Upload failed' });
         }
         return res.status(StatusCodes.OK).json({ url: result.secure_url });
       }
     );
 
     stream.end(fileBuffer);
-  
-    
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+  })
+);
 
 app.get('/', (req, res) => { 
   res.status(StatusCodes.OK).send(

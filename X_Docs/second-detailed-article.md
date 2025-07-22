@@ -245,7 +245,7 @@ useEffect(() => {
     if (docSnap.exists()) {
       setMessages(docSnap.data().messages);
     }
-  });
+  }); 
 
   return () => unSub();
 }, [chatId]);

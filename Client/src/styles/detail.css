@@ -1,6 +1,7 @@
 .detail {
   flex: 1;
-
+   max-width: 300px;
+   
   .user {
     padding: 15px;
     display: flex;

@@ -73,6 +73,7 @@ const Register = () => {
       navigate('/login');
     } catch (error) {
       console.error(error);
+      toast.error('hhh')
       toast.error(error.message);
     } finally {
       setLoading(false);
@@ -83,22 +84,28 @@ const Register = () => {
   return (
     <main
       className='container'
-      style={fileUploadLoading ? { filter: 'blur(5px)' } : {}}
     >
       <div className='login'>
         <div className='item'>
           <h2>Create an Account</h2>
           <form onSubmit={handleRegister}>
-            <label htmlFor='file'>
-              <img src={avatar.url || avatarPlaceholder} alt='User' />
-              Upload an image
-            </label>
-            <input
-              type='file'
-              id='file'
-              style={{ display: 'none' }}
-              onChange={handleAvatar}
-            />
+            {fileUploadLoading ? (
+              <p>Uploading image...</p>
+            ) : (
+              <>
+                <label htmlFor='file'>
+                  <img src={avatar.url || avatarPlaceholder} alt='User' />
+                  Upload an image
+                </label>
+                <input
+                  type='file'
+                  id='file'
+                  style={{ display: 'none' }}
+                  onChange={handleAvatar}
+                />
+              </>
+            )}
+
             <input type='text' placeholder='Username' name='username' />
             <input type='text' placeholder='Email' name='email' />
             <input type='password' placeholder='Password' name='password' />

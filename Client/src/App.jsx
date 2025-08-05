@@ -7,16 +7,18 @@ import Notification from "./components/Notification";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./lib/firebase";
 import { useUserStore } from "./lib/userStore";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 
   const {currentUser, isLoading, fetchUserInfo} = useUserStore()
 
-  const user = false;
+  const user = true;
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
-    fetchUserInfo(user?.uid)
+      fetchUserInfo(user?.uid)
     })
 
     return () => {
@@ -26,6 +28,10 @@ const App = () => {
 
 
   console.log(currentUser)
+
+  useEffect(() => {
+    toast.info('welcome')
+  },[])
   
   
 
@@ -42,8 +48,7 @@ const App = () => {
       ) : (
         <Login />
       )}
-
-      <Notification/>
+      <ToastContainer position='top-right' style={{ zIndex: 9999 }} />
     </div>
   );
 }

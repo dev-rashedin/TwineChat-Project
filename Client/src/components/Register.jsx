@@ -54,8 +54,6 @@ const Register = () => {
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
-
-      console.log('user uid',res.user.uid)
       
       await setDoc(doc(db, 'users', res.user.uid), {
         username,

@@ -110,7 +110,8 @@ export const handleRegister = async (email, password) => {
   await createUserWithEmailAndPassword(auth, email, password);
 
    const res = await createUserWithEmailAndPassword(auth, email, password);
-      
+   
+  //  storing user info in fireStore using setDoc
       await setDoc(doc(db, 'users', res.user.uid), {
         username,
         email,

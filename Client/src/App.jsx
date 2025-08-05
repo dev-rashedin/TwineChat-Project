@@ -12,7 +12,7 @@ const App = () => {
 
   const {currentUser, isLoading, fetchUserInfo} = useUserStore()
 
-  const user = true;
+  const user = false;
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {

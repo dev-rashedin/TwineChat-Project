@@ -1,0 +1,75 @@
+.scroll-container {
+  height: 75vh; 
+  overflow: hidden;
+  position: relative;
+  overflow-y: hidden
+}
+
+.scroll-content { 
+  display: flex;
+  flex-direction: column;
+  animation: verticalScroll 300s linear infinite;
+  overflow: hidden;
+}
+
+
+.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.scroll-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  width: 70vw
+}
+
+.block-wrapper {
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.line {
+  border-radius: 0.5rem;
+  background-color: var(--background-color); /* default gray */
+  height: 1rem;
+}
+
+.line.short {
+  width: 50%;
+  height: 2rem;
+  background-color: #374151;
+}
+
+.line.medium {
+  width: 75%;
+  height: 1rem;
+  background-color: #374151;
+}
+
+.box {
+  height: 9rem; /* 36px * 3 */
+  width: 83.33%;
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media  (min-width: 768px) {
+  .scroll-content {
+    width: 50vw
+  }
+  
+}

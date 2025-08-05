@@ -31,6 +31,7 @@ body {
 .container {
   width: 90vw; 
   height: 90vh;
+
   background-color: var(--background-color);
   backdrop-filter: blur(50px) saturate(180%);
   border-radius: 12px;

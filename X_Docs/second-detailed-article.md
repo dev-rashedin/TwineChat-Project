@@ -1,4 +1,3 @@
-
 # How to Build a Full-Stack Chat App with React, Firebase, and Optional Backend Uploads
 
 Creating a full-fledged real-time chat application may sound complex at first, but with the power of Firebase and React, it becomes surprisingly manageable—even beginner-friendly. In this tutorial, we'll build a chat app that supports:
@@ -32,15 +31,17 @@ This guide is tailored for developers who are familiar with the basics of React 
 4. Create a **Firestore Database** (start in test mode for now).
 
 Install Firebase SDK:
+
 ```bash
 npm install firebase
 ```
 
 Configure Firebase:
+
 ```js
 // firebase.js
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth'
+import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -56,28 +57,30 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export const auth = getAuth()
+export const auth = getAuth();
 export const db = getFirestore();
 ```
 
 ---
 
+## 👤 Step 2: Set Up Authentication
 
-## 👤 Step 2: Set Up Authentication  
 **(We will create two collections in Firestore while registering any user)**
 
 When a new user signs up, we not only authenticate them using Firebase Authentication, but we also need to store their basic profile data in Firestore. For that, we create two collections:
 
-1. `users` — This holds static information like  username, email, avatar, id and an empty array of blocked users. It helps you retrieve public-facing user info without querying Firebase Auth repeatedly.
+1. `users` — This holds static information like username, email, avatar, id and an empty array of blocked users. It helps you retrieve public-facing user info without querying Firebase Auth repeatedly.
 
 2. `userChats` — This is a dynamic collection that stores metadata about each chat the user is involved in. It allows you to quickly fetch a user's conversation list with details like last message, timestamp, and participant info.
 
 Creating these two collections at the time of registration lays the foundation for everything else in the app: real-time messaging, contact lists, and chat syncing.
 
-
 ```js
 import { useState } from 'react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import fileUpload from '../lib/fileUpload';
@@ -89,11 +92,9 @@ export const RegisterUser = () => {
   });
 
   const handleAvatar = async (e) => {
-
     const file = e.target.files[0];
 
-
-    if (!file) return; 
+    if (!file) return;
     const uploadedUrl = await fileUpload(file);
 
     if (uploadedUrl) {
@@ -106,24 +107,24 @@ export const RegisterUser = () => {
     }
   };
 
-export const handleRegister = async (email, password) => {
-  await createUserWithEmailAndPassword(auth, email, password);
+  export const handleRegister = async (email, password) => {
+    await createUserWithEmailAndPassword(auth, email, password);
 
-   const res = await createUserWithEmailAndPassword(auth, email, password);
-   
-  //  storing user info in fireStore using setDoc
-      await setDoc(doc(db, 'users', res.user.uid), {
-        username,
-        email,
-        id: res.user.uid,
-        blocked: []
-      })
+    const res = await createUserWithEmailAndPassword(auth, email, password);
 
-      await setDoc(doc(db, 'userChats', res.user.uid), {
-        chats: []
-      })
+    //  storing user info in fireStore using setDoc
+    await setDoc(doc(db, 'users', res.user.uid), {
+      username,
+      email,
+      id: res.user.uid,
+      blocked: [],
+    });
+
+    await setDoc(doc(db, 'userChats', res.user.uid), {
+      chats: [],
+    });
+  };
 };
-}
 
 export const login = async (email, password) => {
   await signInWithEmailAndPassword(auth, email, password);
@@ -131,8 +132,8 @@ export const login = async (email, password) => {
 ```
 
 > To get the fileUpload code and complete backend code (express, multer) see step 9 and 10
----
 
+---
 
 ## 📦 Step 3: Zustand for State Management
 
@@ -141,6 +142,7 @@ npm install zustand
 ```
 
 Create a simple store to store user data:
+
 ```js
 // useUserStore.js
 import { create } from 'zustand';
@@ -151,24 +153,23 @@ export const useUserStore = create((set) => ({
   currentUser: null,
   isLoading: true,
   fetchUserInfo: async (uid) => {
-    if (!uid) return set({ currentUser: null, isLoading: false })
-    
+    if (!uid) return set({ currentUser: null, isLoading: false });
+
     try {
-      const docRef = doc(db, 'users', uid)
-      const docSnap = await getDoc(docRef)
+      const docRef = doc(db, 'users', uid);
+      const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        return set({ currentUser: docSnap.data(), isLoading: false })
+        return set({ currentUser: docSnap.data(), isLoading: false });
       } else {
-        set({ currentUser: null, isLoading: false })
+        set({ currentUser: null, isLoading: false });
       }
     } catch (error) {
       console.error(error);
-      return set({ currentUser: null, isLoading: false })
+      return set({ currentUser: null, isLoading: false });
     }
-  }
+  },
 }));
-
 ```
 
 ---
@@ -176,22 +177,42 @@ export const useUserStore = create((set) => ({
 ## 🧱 Step 4: fetching userChats from firestore using the user.id (from useUserStor we created earlier)
 
 Example:
+
 ```js
-  const [chats, setChats] = useState([]);
+import { useEffect, useState } from 'react';
+import { useUserStore } from '../../lib/userStore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 
-  const { currentUser } = useUserStore()
-  
-  useEffect(() => {
- 
+const [chats, setChats] = useState([]);
 
-    const unsub = onSnapshot(doc(db, 'userchats', currentUser.id), (doc) => {
-      setChats(doc.data());
-    });
-  
-    return () => {
-      unsub();
+const { currentUser } = useUserStore();
+
+useEffect(() => {
+  const unsub = onSnapshot(
+    doc(db, 'userchats', currentUser.id),
+    async (res) => {
+      const items = res.data().chats;
+
+      const promises = items.map(async (item) => {
+        const userDocRef = doc(db, 'users', item.receiverId);
+        const userDocSnap = await getDoc(userDocRef);
+
+        const user = userDocSnap.data();
+
+        return { ...item, user };
+      });
+
+      const chatData = await Promise.all(promises);
+
+      setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
     }
-  }, [currentUser.id]);
+  );
+
+  return () => {
+    unsub();
+  };
+}, [currentUser.id]);
 ```
 
 ---
@@ -203,7 +224,7 @@ import { collection, getDocs } from 'firebase/firestore';
 
 export const fetchAllUsers = async () => {
   const snap = await getDocs(collection(db, 'users'));
-  return snap.docs.map(doc => ({ _id: doc.id, ...doc.data() }));
+  return snap.docs.map((doc) => ({ _id: doc.id, ...doc.data() }));
 };
 ```
 
@@ -212,6 +233,7 @@ export const fetchAllUsers = async () => {
 ## 💬 Step 6: Create or Load Chat
 
 Check if chat exists, otherwise create:
+
 ```js
 import { doc, setDoc, updateDoc, getDoc, collection } from 'firebase/firestore';
 
@@ -226,12 +248,15 @@ const createOrLoadChat = async (sender, receiver) => {
     }
   };
 
-  await Promise.all([ensureUserChatsExist(senderRef), ensureUserChatsExist(receiverRef)]);
+  await Promise.all([
+    ensureUserChatsExist(senderRef),
+    ensureUserChatsExist(receiverRef),
+  ]);
 
   const senderSnap = await getDoc(senderRef);
-  const existingChat = senderSnap.data().chats.find(
-    (chat) => chat.user.id === receiver._id
-  );
+  const existingChat = senderSnap
+    .data()
+    .chats.find((chat) => chat.user.id === receiver._id);
 
   if (existingChat) return existingChat.chatId;
 
@@ -252,8 +277,18 @@ const createOrLoadChat = async (sender, receiver) => {
   });
 
   await Promise.all([
-    updateDoc(senderRef, { chats: [...(senderSnap.data().chats || []), metadata(receiver, newChatRef.id)] }),
-    updateDoc(receiverRef, { chats: [...(senderSnap.data().chats || []), metadata(sender, newChatRef.id)] }),
+    updateDoc(senderRef, {
+      chats: [
+        ...(senderSnap.data().chats || []),
+        metadata(receiver, newChatRef.id),
+      ],
+    }),
+    updateDoc(receiverRef, {
+      chats: [
+        ...(senderSnap.data().chats || []),
+        metadata(sender, newChatRef.id),
+      ],
+    }),
   ]);
 
   return newChatRef.id;
@@ -272,7 +307,7 @@ useEffect(() => {
     if (docSnap.exists()) {
       setMessages(docSnap.data().messages);
     }
-  }); 
+  });
 
   return () => unSub();
 }, [chatId]);
@@ -326,13 +361,18 @@ const sendMessage = async (chatId, messageText, sender, receiver) => {
 Instead of Firebase Storage, you can upload to ImgUr.
 
 ### Express Route:
+
 ```js
 const express = require('express');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const cors = require('cors');
 const { StatusCodes } = require('http-status-toolkit');
-const { notFoundHandler, globalErrorHandler, asyncHandler } = require('express-error-toolkit');
+const {
+  notFoundHandler,
+  globalErrorHandler,
+  asyncHandler,
+} = require('express-error-toolkit');
 require('dotenv').config();
 
 const app = express();

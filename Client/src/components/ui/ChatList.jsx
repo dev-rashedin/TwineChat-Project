@@ -2,20 +2,9 @@ import { useEffect, useState } from 'react';
 import '../../styles/chatList.css'
 import AddUser from './AddUser';
 import { useUserStore } from '../../lib/userStore';
-   import { doc, onSnapshot } from 'firebase/firestore';
+   import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 
-
-const usersArray = [
-  { name: "Rashedin Islam" },
-  {name: 'Laila Arjuman'},
-  { name: "Mehi Eddin" },
-  { name: "Ashfand Shabbir" },
-  { name: 'Rocky Haque' },
-  { name: 'Jannatul Ferdous' },
-  { name: 'Afsarul Ahmed' },
-  {name: 'Nayeem Ahmed'},
-]
 
 const ChatList = () => {
 
@@ -27,8 +16,23 @@ const ChatList = () => {
   useEffect(() => {
  
 
-    const unsub = onSnapshot(doc(db, 'userchats', currentUser.id), (doc) => {
-      setChats(doc.data());
+    const unsub = onSnapshot(doc(db, 'userchats', currentUser.id), async (res) => {
+      const items = res.data().chats
+
+      const promises = items.map( async (item) => {
+     const userDocRef = doc(db, 'users', item.receiverId);
+        const userDocSnap = await getDoc(userDocRef);
+
+        const user = userDocSnap.data();
+
+        return {...item, user}
+        
+      })
+
+      const chatData = await Promise.all(promises)
+
+      setChats(chatData)
+
     });
   
     return () => {
@@ -55,12 +59,12 @@ const ChatList = () => {
         />
       </div>
       {/*  */}
-      {usersArray.map((user, idx) => (
-        <div className='item' key={idx}>
+      {chats.map((chat) => (
+        <div className='item' key={chat.chatId}>
           <img src='./avatar.png' alt='user' />
           <div className='texts'>
             <span>{user.name}</span>
-            <p>{ `Hello ${user.name}`}</p>
+            <p>{ chat.lastMessage}</p>
           </div>
         </div>
       ))}

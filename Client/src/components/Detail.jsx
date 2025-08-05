@@ -11,6 +11,7 @@ const Detail = () => {
 
       <section className='info'>
         {/* 1st option */}
+        {/* 1st option */}
         <div className='option'>
           <div className='title'>
             <span>Chat Settings</span>
@@ -87,6 +88,8 @@ const Detail = () => {
             <img src='./arrowUp.png' alt='' />
           </div>
         </div>
+
+        {/* buttons */}
 
         {/* block button */}
         <button>Block User</button>

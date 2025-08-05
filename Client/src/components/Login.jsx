@@ -30,7 +30,6 @@ const Login = () => {
       toast.error(error.message);
     } finally {
       setLoading(false);
-      toast.warn('something went wrong');
     }
   };
 

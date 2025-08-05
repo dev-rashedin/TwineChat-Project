@@ -3,18 +3,15 @@ import Chat from "./components/Chat";
 import Detail from "./components/Detail";
 import List from "./components/List";
 import Login from "./components/Login";
-import Notification from "./components/Notification";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./lib/firebase";
 import { useUserStore } from "./lib/userStore";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 
   const {currentUser, isLoading, fetchUserInfo} = useUserStore()
 
-  const user = true;
+  const user = false;
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
@@ -28,11 +25,6 @@ const App = () => {
 
 
   console.log(currentUser)
-
-  useEffect(() => {
-    toast.info('welcome')
-  },[])
-  
   
 
   if(isLoading) return <div className="loading">Loading...</div>
@@ -48,7 +40,6 @@ const App = () => {
       ) : (
         <Login />
       )}
-      <ToastContainer position='top-right' style={{ zIndex: 9999 }} />
     </div>
   );
 }

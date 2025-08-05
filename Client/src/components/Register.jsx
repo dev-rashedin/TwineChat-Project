@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import '../styles/login.css';
+import { useEffect, useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
@@ -42,6 +42,7 @@ const Register = () => {
       setFileUploadLoading(false);
     }
   };
+
   
 
   const handleRegister = async (e) => {
@@ -66,14 +67,11 @@ const Register = () => {
       await setDoc(doc(db, 'userChats', res.user.uid), {
         chats: []
       })
-
-
       toast.success('Account created! You can now login now.');
       e.target.reset();
       navigate('/login');
     } catch (error) {
       console.error(error);
-      toast.error('hhh')
       toast.error(error.message);
     } finally {
       setLoading(false);

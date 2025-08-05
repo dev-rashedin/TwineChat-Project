@@ -173,17 +173,25 @@ export const useUserStore = create((set) => ({
 
 ---
 
-## 🧱 Step 4: Firestore Collections
-
-- `/users/{uid}` → User profile
-- `/userChats/{uid}` → Metadata of user’s chats
-- `/chats/{chatId}` → Actual chat messages
+## 🧱 Step 4: fetching userChats from firestore using the user.id (from useUserStor we created earlier)
 
 Example:
-```json
-/users/abc => { email, name }
-/userChats/abc => { chats: [{ chatId, user, lastMessage, updatedAt }] }
-/chats/chat123 => { messages: [{ senderId, text, createdAt }] }
+```js
+  const [chats, setChats] = useState([]);
+
+  const { currentUser } = useUserStore()
+  
+  useEffect(() => {
+ 
+
+    const unsub = onSnapshot(doc(db, 'userchats', currentUser.id), (doc) => {
+      setChats(doc.data());
+    });
+  
+    return () => {
+      unsub();
+    }
+  }, [currentUser.id]);
 ```
 
 ---

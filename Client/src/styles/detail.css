@@ -118,7 +118,7 @@
       }
 
       &.logout {
-        padding: 10px;
+        padding: 1rem;
         background-color: var(--secondary-bg-dark);
         color: white;
         border: none;

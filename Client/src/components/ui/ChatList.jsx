@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../styles/chatList.css'
 import AddUser from './AddUser';
+import { useUserStore } from '../../lib/userStore';
+   import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 
 
 const usersArray = [
@@ -17,6 +20,24 @@ const usersArray = [
 const ChatList = () => {
 
   const [addMode, setAddMode] = useState(false);
+  const [chats, setChats] = useState([]);
+
+  const { currentUser } = useUserStore()
+  
+  useEffect(() => {
+ 
+
+    const unsub = onSnapshot(doc(db, 'userchats', currentUser.id), (doc) => {
+      setChats(doc.data());
+    });
+  
+    return () => {
+      unsub();
+    }
+  }, [currentUser.id]);
+
+  console.log(chats)
+  
 
   return (
     <main className='chatList'>

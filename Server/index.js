@@ -7,9 +7,15 @@ const { notFoundHandler, globalErrorHandler, asyncHandler } = require('express-e
 require('dotenv').config();
 
 
+const corsOption = {
+  origin: 'http://localhost:5173',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
+
 
 const app = express();
-app.use(cors());
+app.use(cors(corsOption));
 
 // Configure Cloudinary
 cloudinary.config({
